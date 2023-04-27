@@ -1,0 +1,49 @@
+.notification
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 3px
+    flex-direction: row
+    flex-wrap: nowrap
+    margin: 10px
+    padding: 16px
+    background: $background-primary
+    border: 1px solid $border-default
+
+    img, i
+        margin: 0 16px 0 0
+        padding: 0 !important
+
+    img
+        width: 24px
+
+    i
+        font-size: 24px
+        color: $text-secondary
+
+    span
+        color: $text-secondary
+        font-size: 12px
+        margin: 0 !important
+        padding: 0 !important
+        line-height: 1.8rem
+
+    &.is-small
+        padding: 10px
+
+        i
+            font-size: 16px !important
+            margin: 0 16px 0 0 !important
+
+    &.no-margin
+        margin: 0
+
+    &.is-red
+        background: rgba($red, .1)
+        border: 1px solid $red
+
+        i
+            color: $red !important
+
+        span
+            color: $red !important

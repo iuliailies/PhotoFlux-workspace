@@ -1,0 +1,69 @@
+<section class="auth login">
+  <div class="container">
+    <div class="header">
+      <span class="text">Log in</span>
+    </div>
+    <div class="notification is-red" *ngIf="error">
+      <img [src]="'./assets/icons/x_empty.svg'" alt="" />
+      <span class="text"
+        >Lorem Ipsum is simply dummy text of the printing and typesetting
+        industry. Lorem Ipsum has been the industry's standard dummy</span
+      >
+    </div>
+    <form (ngSubmit)="submit()" [formGroup]="loginForm" novalidate class="form">
+      <div class="field">
+        <label class="label">Email</label>
+        <div
+          class="input-field"
+          [ngClass]="{
+            'is-active': emailFocused
+          }"
+        >
+          <input
+            class="input"
+            type="text"
+            formControlName="email"
+            (focus)="emailFocused = true"
+            (blur)="emailFocused = false"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Password</label>
+        <div
+          class="input-field"
+          [ngClass]="{
+            'is-active': passwordFocused
+          }"
+        >
+          <input
+            class="input"
+            type="password"
+            formControlName="password"
+            autocomplete="off"
+            *ngIf="!showPassword"
+            (focus)="passwordFocused = true"
+            (blur)="passwordFocused = false"
+          />
+          <input
+            class="input"
+            type="text"
+            formControlName="password"
+            autocomplete="off"
+            *ngIf="showPassword"
+            (focus)="passwordFocused = true"
+            (blur)="passwordFocused = false"
+          />
+          <img
+            [src]="'./assets/icons/preview.svg'"
+            alt=""
+            (click)="showPassword = !showPassword"
+          />
+        </div>
+      </div>
+      <div class="field justify-end">
+        <button type="submit" [disabled]="!loginForm.valid">Log in</button>
+      </div>
+    </form>
+  </div>
+</section>

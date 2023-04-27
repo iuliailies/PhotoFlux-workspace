@@ -1,0 +1,21 @@
+button
+    all: unset
+    height: 26px
+    min-width: 70px
+    padding: 4px 10px
+    color: $white
+    text-align: center
+    background-color: $dark-blue
+    border-radius: 3px
+    transition: background-color .2s
+
+    &:hover
+        background-color: $cool-blue
+        cursor: pointer
+        text-transform: none
+        text-align: center
+        align-items: flex-start
+
+    &.is-disabled
+        opacity: .4
+        cursor: default

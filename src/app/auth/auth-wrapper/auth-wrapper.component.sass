@@ -1,0 +1,135 @@
+@import 'colours'
+@import 'variables'
+@import
+
+$height: 540px
+$form-padding: 20px
+
+.auth-wrapper
+    display: flex
+    justify-content: center
+
+    .container
+        // margin: 50px
+        display: flex
+        width: 100%
+        height: 100vh
+        justify-content: space-between
+        align-items: center
+
+        .section
+            // margin-bottom: 20px
+            width: 50%
+            height: 100%
+            display: flex
+            align-items: center
+            justify-content: center
+
+            &:first-child
+                background-color: $white
+
+                .wrapper
+                    display: flex
+                    flex-direction: column
+                    height: calc($height - $form-padding)
+
+                .slogan
+                    font-size: 22px
+                    font-weight: $weight-normal
+                    margin: 80px 0
+                    max-width: 500px
+
+            &:last-child
+                background-image: url("../../../assets/wallpapers/landing.jpg")
+                background-size: 100%
+                background-size: cover
+    .logo
+        height: 80px
+        width: 324px // TODO:
+        margin-bottom: 20px
+
+
+.flip
+    position: relative
+    display: flex
+    width: 420px
+    max-width: 90vw
+    height: $height
+    perspective: 800px
+    transform-style: preserve-3d
+
+    .flippable
+        width: 100%
+        height: 100%
+        position: relative
+        transform-style: preserve-3d
+        transition: all 600ms ease-out
+
+        .back
+            transform: rotateY(180deg)
+
+        .front, .back
+            position: absolute
+            width: 100%
+            height: 100%
+            transform-style: preserve-3d
+            backface-visibility: hidden
+
+        .toggle
+            position: absolute
+            z-index: 10000
+            bottom: 30px
+            right: -30px
+            background-color: $white
+            border: 1px solid $border-primary
+            border-radius: 6px 20px 20px 6px
+            box-shadow: $box-shadow-light
+            transition: transform .3s
+
+            .text-area
+                padding: 10px
+                // margin: x
+                font-weight: $weight-medium
+                max-width: 105px
+
+            .icon-area
+                padding: 2px
+                img
+                    width: 20px
+                    height: 20px
+
+            &:hover
+                //TODO: fix hover bug
+                transform: translate(10px)
+
+            &:hover
+                cursor: pointer
+                .icon-area
+                    img
+                        opacity: .8
+
+        &.is-rotated
+            transform: rotateY(180deg)
+            .toggle
+                .text-area
+                    transform: scaleX(-1)
+
+
+
+@media only screen and (max-width: 1024px)
+  .auth-wrapper
+    .container
+        flex-direction: column
+        justify-content: center
+
+        .section
+            width: auto
+            height: fit-content
+            background: none
+            background-image: none !important
+
+            .wrapper
+                height: fit-content !important
+
+            .slogan
+                display: none
