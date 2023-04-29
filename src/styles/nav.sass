@@ -26,10 +26,23 @@
 
         .icon-wrapper
             padding: 10px
+            position: relative
 
             img
                 filter: $filter-white
                 height: 20px
+
+                &.arrow
+                    position: absolute
+                    margin: auto 0
+                    right: 0px
+                    transition: right .2s
+
+            &:hover
+                cursor: pointer
+
+                .arrow
+                    right:  -5px
 
     .nav-content
         .user-icon
