@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Observable, filter } from 'rxjs';
 import { AuthService } from './auth/shared/auth.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,8 +13,14 @@ import { AuthService } from './auth/shared/auth.service';
 export class AppComponent implements OnInit {
   title = 'PhotoFlux';
   prevUrl?: string;
+  loggedIn: Observable<boolean>;
+  isProfileOpen = false;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router) {
+    this.loggedIn = this.auth.authenticated
+      .asObservable()
+      .pipe(untilDestroyed(this));
+  }
 
   ngOnInit(): void {
     this.router.events

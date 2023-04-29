@@ -1,0 +1,81 @@
+.nav-container
+    width: 50px
+    height: 100%
+    background: $background-gradient
+    display: flex
+    flex-direction: column
+    align-items: center
+    border-right: 1px solid $border-primary
+    position: relative
+    z-index: 1000
+
+    .icon
+        width: 100%
+        height: 40px
+
+    .nav-section
+        padding: 5px
+
+    .nav-top
+        border-bottom: 1px solid $border-primary
+
+    .nav-bottom
+        position: absolute
+        bottom: 0px
+        border-top: .6px solid $white
+
+        .icon-wrapper
+            padding: 10px
+
+            img
+                filter: $filter-white
+                height: 20px
+
+    .nav-content
+        .user-icon
+            height: 27px
+            width: 27px
+            background-color: $golden
+            color: $white
+            font-weight: $weight-semibold
+            border-radius: 4px
+            border: 1px solid $white
+            margin: 10px
+            display: flex
+            justify-content: center
+            align-items: center
+            transition: opacity .4s
+            position: relative
+
+            span
+                -webkit-user-select: none
+                -ms-user-select: none
+                user-select: none
+
+            .arrow
+                position: absolute
+                height: 12px
+                left: 0
+                filter: $filter-white
+                opacity: 0
+                transition: all .2s
+
+            &:hover
+                cursor: pointer
+                box-shadow: $box-shadow-white
+
+                .arrow
+                    left: 27px
+                    opacity: .6
+
+        &.profile-open
+            .user-icon
+                .arrow
+                    transform: rotate(180deg)
+                    left: 27px
+                    opacity: 1
+
+
+
+
+

@@ -1,0 +1,18 @@
+<nav class="nav-container">
+  <div class="nav-top nav-section">
+    <img [src]="'./assets/icons/logo-camera-white.png'" class="icon" alt="" />
+  </div>
+  <div class="nav-content nav-section" [class.profile-open]="profileOpen">
+    <div class="profile-toggle">
+      <div class="user-icon" (click)="clickProfile()">
+        <span class="text">IU</span>
+        <img [src]="'./assets/icons/arrow.svg'" class="arrow" alt="" />
+      </div>
+    </div>
+  </div>
+  <div class="nav-bottom nav-section">
+    <div class="icon-wrapper">
+      <img [src]="'./assets/icons/logout.png'" class="icon" alt="" />
+    </div>
+  </div>
+</nav>

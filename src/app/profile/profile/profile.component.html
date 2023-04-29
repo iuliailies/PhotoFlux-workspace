@@ -1,0 +1,16 @@
+<section
+  class="profile"
+  [class.is-open]="isOpen"
+  [ngStyle]="{
+    width: appliedWidth + 'px',
+    left: (isOpen ? 50 : -appliedWidth) + 'px'
+  }"
+  #profile
+>
+  <div class="flex-container">
+    <div class="profile-info">
+      <p>profile section</p>
+    </div>
+    <div class="expandable" (mousedown)="resize($event)"></div>
+  </div>
+</section>

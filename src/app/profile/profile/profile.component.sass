@@ -1,0 +1,33 @@
+@import 'colours'
+@import 'variables'
+
+.profile
+    position: absolute
+    height: 100%
+    top: 0
+    border-right: 1px solid $border-primary
+    background: $background-primary
+    box-shadow: $box-shadow-right
+    transition: left .3s ease-in-out
+    z-index: 100
+
+    .flex-container
+        display: flex
+        height: 100%
+
+        .profile-info
+            width: 100%
+
+        .expandable
+            height: 100%
+            width: 2px
+            background-color: $border-primary
+
+            &:hover
+                background-color: $cool-blue
+                cursor: col-resize
+
+    &.is-dragged
+        .flex-container
+            .expandable
+                background-color: $cool-blue
