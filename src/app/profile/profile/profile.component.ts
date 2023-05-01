@@ -36,7 +36,6 @@ export class ProfileComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    console.log('on init');
     // extra check, in case there was not enough space for the default width value
     this.width = 500 < window.innerWidth * 0.8 ? 500 : window.innerWidth * 0.8;
     this.appliedWidth = this.width;
@@ -44,6 +43,7 @@ export class ProfileComponent implements OnInit {
 
   resize(event: MouseEvent): void {
     this.mouseStartXCoordinate = event.x;
+    this.width = this.profile.nativeElement.getBoundingClientRect().width;
     this.profile.nativeElement.classList.add('is-dragged');
     document.documentElement.style.cursor = 'col-resize';
     document.addEventListener('mousemove', this.functionBindings.move);
@@ -61,6 +61,5 @@ export class ProfileComponent implements OnInit {
     document.removeEventListener('mouseup', this.functionBindings.up);
     this.profile.nativeElement.classList.remove('is-dragged');
     document.documentElement.style.cursor = 'auto';
-    this.width = this.appliedWidth;
   }
 }
