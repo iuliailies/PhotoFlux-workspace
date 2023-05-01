@@ -22,6 +22,11 @@
             height: 100%
             width: 2px
             background-color: $border-primary
+            // make the hover area bigger by adding "invisible" borders
+            background-clip: padding-box
+            border-right: 2px solid transparent
+            border-left: 2px solid transparent
+            transform: translateX(2px)
 
             &:hover
                 background-color: $cool-blue
