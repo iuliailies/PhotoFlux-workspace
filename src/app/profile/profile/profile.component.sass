@@ -10,7 +10,7 @@
     box-shadow: $box-shadow-right
     transition: left .3s ease-in-out
     z-index: 100
-    min-width: 200px !important
+    min-width: 300px !important
     max-width: 80vw !important
 
     .flex-container
@@ -19,6 +19,51 @@
 
         .profile-info
             width: 100%
+
+            .info
+                .name
+                    font-size: 16px
+
+            .stat
+                display: flex
+                align-items: center
+
+                &:not(:last-child)
+                    margin-right: 10px
+
+                img
+                    width: 12px
+                    height: 12px
+
+            .photos
+                .subtitle
+                    display: flex
+                    font-size: 12px
+                    text-transform: uppercase
+                    padding-bottom: 10px
+
+                .gallery
+                    .photo
+                        position: relative
+
+                        img
+                            transition: filter .2s
+
+                        .stat
+                            position: absolute
+                            left: 50%
+                            top: 50%
+                            transform: translate(-50%, -50%)
+                            display: none
+
+                        &:hover
+                            .photo-elem
+                                filter: brightness(60%)
+                            .stat
+                                display: flex
+                                z-index: 1000
+                                color: $white
+
 
         .expandable
             height: 100%

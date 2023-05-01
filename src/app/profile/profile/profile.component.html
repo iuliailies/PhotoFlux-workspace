@@ -9,10 +9,46 @@
 >
   <div class="flex-container">
     <div class="profile-info slimScroll">
-      <div class="gallery container">
-        <div class="photo" *ngFor="let photo of dummyImages">
-          <!-- TODO: check why first profile translation is buggy -->
-          <img [src]="photo" class="photo" alt="" />
+      <div class="info container">
+        <div class="space-between">
+          <div>
+            <div class="name">Iulia Maria Ilies</div>
+            <div class="statistics justify-start">
+              <div class="stat">
+                <img
+                  [src]="'./assets/icons/gallery.png'"
+                  class="photo"
+                  alt=""
+                />
+                <span class="text">12</span>
+              </div>
+              <div class="stat">
+                <img
+                  [src]="'./assets/icons/star-full.png'"
+                  class="photo"
+                  alt=""
+                />
+                <span class="text">203</span>
+              </div>
+            </div>
+          </div>
+          <button>
+            <img [src]="'./assets/icons/add.svg'" class="photo" alt="" />
+            <span class="text">Upload photo</span>
+          </button>
+        </div>
+      </div>
+      <div class="photos container">
+        <span class="subtitle">Gallery</span>
+        <div class="gallery">
+          <div class="photo" *ngFor="let photo of dummyImages">
+            <!-- TODO: check why first profile translation is buggy -->
+            <img [src]="photo" class="photo-elem" alt="" />
+            <div class="stat">
+              <img [src]="'./assets/icons/star-empty-white.svg'" alt="" />
+              <span class="text">12</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
