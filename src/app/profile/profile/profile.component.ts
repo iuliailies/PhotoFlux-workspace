@@ -8,8 +8,9 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 export class ProfileComponent implements OnInit {
   @ViewChild('profile') profile!: ElementRef;
   @Input() isOpen: boolean = false;
-  width = 500;
-  appliedWidth = 500;
+  defaultWidth = 500;
+  width: number = this.defaultWidth;
+  appliedWidth: number = this.defaultWidth;
 
   functionBindings = {
     move: this.handleMouseMove.bind(this),
@@ -19,7 +20,11 @@ export class ProfileComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // extra check, in case there was not enough space for the default width value
+    this.width = 500 < window.innerWidth * 0.8 ? 500 : window.innerWidth * 0.8;
+    this.appliedWidth = this.width;
+  }
 
   resize(event: MouseEvent): void {
     this.mouseStartXCoordinate = event.x;
