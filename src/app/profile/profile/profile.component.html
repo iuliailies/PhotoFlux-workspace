@@ -8,8 +8,13 @@
   #profile
 >
   <div class="flex-container">
-    <div class="profile-info">
-      <p>profile section</p>
+    <div class="profile-info slimScroll">
+      <div class="gallery container">
+        <div class="photo" *ngFor="let photo of dummyImages">
+          <!-- TODO: check why first profile translation is buggy -->
+          <img [src]="photo" class="photo" alt="" />
+        </div>
+      </div>
     </div>
     <div class="expandable" (mousedown)="resize($event)"></div>
   </div>

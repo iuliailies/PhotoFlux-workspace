@@ -12,6 +12,21 @@ export class ProfileComponent implements OnInit {
   width: number = this.defaultWidth;
   appliedWidth: number = this.defaultWidth;
 
+  dummyImages = [
+    './assets/wallpapers/chess.jpg',
+    './assets/wallpapers/stairs.jpg',
+    './assets/wallpapers/land.jpg',
+    './assets/wallpapers/zoom.jpg',
+    './assets/wallpapers/landing.jpg',
+    './assets/wallpapers/sand.jpg',
+    './assets/wallpapers/chess.jpg',
+    './assets/wallpapers/stairs.jpg',
+    './assets/wallpapers/land.jpg',
+    './assets/wallpapers/zoom.jpg',
+    './assets/wallpapers/landing.jpg',
+    './assets/wallpapers/sand.jpg',
+  ];
+
   functionBindings = {
     move: this.handleMouseMove.bind(this),
     up: this.handleMouseUp.bind(this),
@@ -21,6 +36,7 @@ export class ProfileComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    console.log('on init');
     // extra check, in case there was not enough space for the default width value
     this.width = 500 < window.innerWidth * 0.8 ? 500 : window.innerWidth * 0.8;
     this.appliedWidth = this.width;
