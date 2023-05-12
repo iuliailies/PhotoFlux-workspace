@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // this is set to use the deployed backend in dev mode as well, change if needed/wanted to test with locally run backend
+  apiURL: 'http://localhost:8033/api',
 };
 
 /*

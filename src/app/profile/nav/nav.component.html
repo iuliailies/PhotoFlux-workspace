@@ -5,13 +5,13 @@
   <div class="nav-content nav-section" [class.profile-open]="profileOpen">
     <div class="profile-toggle">
       <div class="user-icon" (click)="clickProfile()">
-        <span class="text">IU</span>
+        <span class="text">{{ userInitials }}</span>
         <img [src]="'./assets/icons/arrow.svg'" class="arrow" alt="" />
       </div>
     </div>
   </div>
   <div class="nav-bottom nav-section">
-    <div class="icon-wrapper">
+    <div class="icon-wrapper" (click)="logout()">
       <img [src]="'./assets/icons/logout-left.svg'" class="icon" alt="" />
       <img
         [src]="'./assets/icons/logout-arrow.svg'"

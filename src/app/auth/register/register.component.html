@@ -84,7 +84,9 @@
         </div>
       </div>
       <div class="field justify-end">
-        <button type="submit" [disabled]="!registerForm.valid">Register</button>
+        <button type="submit" [disabled]="!registerForm.valid">
+          {{ loading ? "Loading..." : "Register" }}
+        </button>
       </div>
     </form>
   </div>

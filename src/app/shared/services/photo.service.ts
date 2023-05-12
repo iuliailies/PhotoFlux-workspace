@@ -13,7 +13,7 @@ import { generateNewPhoto } from '../helpers/photo.helpers';
   providedIn: 'root',
 })
 export class PhotoService {
-  private requestURL = 'http://localhost:8033/api/photos/';
+  private requestURL = 'photos/';
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 

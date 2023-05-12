@@ -7,18 +7,36 @@ export interface Login {
   password: string;
 }
 
+export interface Register {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface Logout {
+  refresh_token: string;
+}
+
 export interface UserData {
-  user?: {};
-  tokens?: {
+  // claims
+  user: {
+    exp: number;
+    sub: string;
+  };
+  tokens: {
     access_token: string;
     refresh_token: string;
     storedAt: number;
   };
 }
 
-export interface AuthResponse {
+export interface AuthData {
   access_token: string;
   refresh_token: string;
+}
+
+export interface AuthResponse {
+  data: AuthData;
 }
 
 export interface JSONResponse {

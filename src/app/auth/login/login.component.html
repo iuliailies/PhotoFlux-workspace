@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="field justify-end">
-        <button type="submit" [disabled]="!loginForm.valid">Log in</button>
+        <button type="submit" [disabled]="!loginForm.valid"> {{ loading ? 'Loading...' : 'Log in' }} </button>
       </div>
     </form>
   </div>

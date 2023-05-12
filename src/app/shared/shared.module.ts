@@ -7,6 +7,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComboboxComponent } from './components/combobox/combobox.component';
 import { FormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
+import { ApiInterceptorProvider } from './interceptors/api.interceptor';
+import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
+import { RefreshTokenInterceptorProvider } from './interceptors/refresh-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,11 @@ import { LoaderComponent } from './components/loader/loader.component';
     ComboboxComponent,
     LoaderComponent,
     FormsModule,
+  ],
+  providers: [
+    ApiInterceptorProvider,
+    ErrorInterceptorProvider,
+    RefreshTokenInterceptorProvider,
   ],
 })
 export class SharedModule {}

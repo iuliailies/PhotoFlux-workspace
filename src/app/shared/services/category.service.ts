@@ -8,7 +8,7 @@ import { generateNewCategory } from '../helpers/category.helpers';
   providedIn: 'root',
 })
 export class CategoryService {
-  private requestURL = 'http://localhost:8033/api/categories/';
+  private requestURL = 'categories/';
 
   constructor(private http: HttpClient) {}
 

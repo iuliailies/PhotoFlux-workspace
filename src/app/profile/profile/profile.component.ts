@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalService } from 'src/app/shared/modal/modal.service';
 import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
+import { AuthService } from 'src/app/auth/shared/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -35,7 +36,14 @@ export class ProfileComponent implements OnInit {
   };
   mouseStartXCoordinate = 0;
 
-  constructor(private modalService: ModalService) {}
+  constructor(
+    private modalService: ModalService,
+    private authService: AuthService
+  ) {}
+
+  get userName(): string {
+    return this.authService.user?.name || '';
+  }
 
   ngOnInit(): void {
     // extra check, in case there was not enough space for the default width value
