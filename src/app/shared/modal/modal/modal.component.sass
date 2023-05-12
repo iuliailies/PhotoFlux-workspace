@@ -1,0 +1,90 @@
+@import colours
+@import variables
+
+.modal-overlay
+  position: fixed
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background: rgba($background-modal-overlay, .6)
+  z-index: 10000
+  display: none
+  overflow-y: auto
+
+  &.is-open
+    display: block
+
+  .modal-container
+    display: block
+    width: 100px
+    margin: 40px auto
+    background: $background-modal
+    border-radius: $border-radius-modal
+    box-shadow: $box-shadow-modal
+
+    &.is-small
+      width: 500px
+
+    &.is-large
+      width: 1000px
+
+    &.is-medium
+      width: 700px
+
+    ::ng-deep
+      .modal-header
+        display: flex
+        align-items: center
+        justify-content: space-between
+        border-bottom: 1px solid $border-default
+        padding: 0px 10px
+
+        .header-title
+          width: 100%
+          display: block
+
+          h1
+            font-size: 16px
+            font-weight: $weight-normal
+            display: block
+            padding: 0 4px
+            text-transform: none
+
+          h2
+            color: $text-secondary
+            font-size: 14px
+            font-weight: $weight-normal
+            text-transform: none
+            display: block
+            padding: 0
+
+        .close-icon
+          cursor: pointer
+          color: $text-secondary
+          height: 12px
+          width: 12px
+          padding: 0 4px
+          cursor: pointer
+
+          img
+            height: 100%
+            width: 100%
+
+      .modal-footer
+        padding: 10px
+        display: flex
+        align-items: center
+        border-top: 1px solid $border-default
+        border-radius: 0 0 $border-radius-modal $border-radius-modal
+
+      .modal-body
+        .section
+          margin: 20px
+
+          .label
+            font-size: 14px
+            margin: 10px 0px
+

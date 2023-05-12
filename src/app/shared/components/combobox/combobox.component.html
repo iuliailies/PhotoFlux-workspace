@@ -1,0 +1,38 @@
+<div class="combobox-container">
+  <div class="combobox-value slimScroll">
+    <div class="combobox-values-container">
+      <div
+        class="combobox-value-item"
+        *ngFor="let val of selectedItems; let i = index"
+      >
+        <span>{{ val.placeholder }}</span>
+        <i
+          class="fas fa-times remove-icon"
+          (click)="removeItemEvent($event, val.value)"
+        ></i>
+      </div>
+    </div>
+  </div>
+  <div class="search-container" *ngIf="options.search">
+    <img [src]="'./assets/icons/search.svg'" class="search-icon" />
+    <input
+      type="text"
+      class="search-input"
+      [(ngModel)]="keyword"
+      [ngModelOptions]="{ standalone: true }"
+      [placeholder]="options.searchPlaceholder"
+    />
+  </div>
+  <div class="combobox-options-container slimScroll" *ngIf="isOpened">
+    <div class="combobox-options">
+      <div
+        class="combobox-option align-center"
+        [class.is-active]="innerValue && isSelected(val.value)"
+        *ngFor="let val of items"
+        (click)="toggleItem(val.value)"
+      >
+        <span class="option-placeholder">{{ val.placeholder }}</span>
+      </div>
+    </div>
+  </div>
+</div>

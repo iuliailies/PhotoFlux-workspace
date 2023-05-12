@@ -1,4 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { ModalService } from 'src/app/shared/modal/modal.service';
+import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -33,7 +35,7 @@ export class ProfileComponent implements OnInit {
   };
   mouseStartXCoordinate = 0;
 
-  constructor() {}
+  constructor(private modalService: ModalService) {}
 
   ngOnInit(): void {
     // extra check, in case there was not enough space for the default width value
@@ -61,5 +63,9 @@ export class ProfileComponent implements OnInit {
     document.removeEventListener('mouseup', this.functionBindings.up);
     this.profile.nativeElement.classList.remove('is-dragged');
     document.documentElement.style.cursor = 'auto';
+  }
+
+  openUploadModal(): void {
+    const modalRef = this.modalService.open(PhotoModalComponent);
   }
 }

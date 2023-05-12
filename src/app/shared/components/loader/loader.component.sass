@@ -1,0 +1,54 @@
+@import 'colours'
+@import 'variables'
+@import 'animations'
+
+\:host
+
+  .loader
+    border-radius: 50%
+    width: 35px
+    height: 35px
+    margin: 35px auto
+    position: relative
+    border-top: 2px solid $border-default
+    border-right: 2px solid $border-default
+    border-bottom: 2px solid $border-default
+    border-left: 2px solid $text-secondary
+    -webkit-transform: translateZ(0)
+    -ms-transform: translateZ(0)
+    transform: translateZ(0)
+    -webkit-animation: load 1.1s infinite linear
+    animation: load 1.1s infinite linear
+
+  &.no-margin
+    .loader
+      margin: 0 auto
+
+  &.is-small
+    .loader
+      width: 14px
+      height: 14px
+      margin: 0
+      position: absolute
+
+  &.is-large
+    .loader
+      width: 40px
+      height: 40px
+      margin: 40px auto
+
+  &.on-canvas
+    position: absolute
+    top: calc(50% - 120px)
+    left: calc(50% - 40px)
+
+    .loader
+      width: 80px
+      height: 80px
+
+  &.is-white
+    .loader
+      border-top: 2px solid rgba($white, .4)
+      border-right: 2px solid rgba($white, .4)
+      border-bottom: 2px solid rgba($white, .4)
+      border-left: 2px solid $white

@@ -1,0 +1,102 @@
+@import 'colours'
+@import 'variables'
+@import 'mixins'
+
+$selectbox-height: 20px
+$selectbox-value-margin: 5px
+$selectbox-row-height: calc($selectbox-height + 2 * $selectbox-value-margin)
+
+\:host
+  display: block
+
+  .combobox-container
+    display: flex
+    flex-direction: column
+    align-items: center
+    width: 100%
+    max-width: 100%
+    height: auto
+    position: relative
+    background: $background-primary
+    border-radius: $border-radius
+    border: 1px solid $border-secondary
+
+    .combobox-value
+      width: 100%
+      height: $selectbox-row-height
+      border-bottom: 1px solid $border-secondary
+      border-top-left-radius: $border-radius
+      border-top-right-radius: $border-radius
+      color: $text-primary
+      display: flex
+      align-items: center
+      position: relative
+
+      .combobox-values-container
+        height: 100%
+        align-items: center
+        display: flex
+
+        .combobox-value-item
+          display: flex
+          align-items: center
+          height: $selectbox-height
+          border: 1px solid $border-default
+          border-radius: $border-radius
+          background-color: $green
+          color: $white
+          padding: 0 7px
+          margin: $selectbox-value-margin
+
+          span
+            white-space: nowrap
+
+          .remove-icon
+            margin-left: 5px
+            margin-top: 2px
+            color: $white
+            cursor: pointer
+
+    .search-container
+        height: $selectbox-row-height
+        width: 100%
+        border-radius: 0px
+
+  .combobox-options-container
+    top: calc(#{$selectbox-height} + 3px)
+    width: 100%
+    max-height: 4 * $selectbox-row-height
+    left: 0
+    right: 0
+    z-index: 12
+    background: $background-primary
+    border-bottom-left-radius: $border-radius
+    border-bottom-right-radius: $border-radius
+
+    .combobox-options
+        width: 100%
+        background: $background-primary
+        max-height: 180px
+        display: flex
+        justify-content: flex-start
+        flex-wrap: wrap
+
+        .combobox-option
+            margin: 5px
+            padding: 5px
+            background-color: $golden
+            border-radius: 5px
+            cursor: pointer
+            transition: background-color .2s
+            position: relative
+
+            &.is-active
+              background-color: $green
+
+            .option-placeholder
+                color: $white
+                margin: 2px
+
+            &:hover
+                opacity: .9
+

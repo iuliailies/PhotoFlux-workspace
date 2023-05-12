@@ -1,14 +1,16 @@
-button
+button, .button
     all: unset
     height: 26px
-    min-width: 70px
-    padding: 4px 10px
+    min-width: 64px
+    padding: 3px 7px
     color: $white
     display: inline-flex
     align-items: center
     background-color: $dark-blue
-    border-radius: 3px
     transition: background-color .2s
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.10)
+    border-radius: 3px
+    border: .1rem solid $border-button
 
     span
         margin-left: auto
@@ -25,6 +27,17 @@ button
         background-color: $cool-blue
         cursor: pointer
 
+    &:not(:last-child)
+        margin-right: 15px
+
     &.is-disabled
         opacity: .4
         cursor: default
+
+    &.is-light
+        background-color: $background-light
+        color: $gray-500
+
+        &:hover
+            color: $gray-700
+            background-color: $background-light

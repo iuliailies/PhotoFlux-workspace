@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProfileModule } from './profile/profile.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +15,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     AuthModule,
     ProfileModule,
     DashboardModule,
+    SharedModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

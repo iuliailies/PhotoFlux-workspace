@@ -1,0 +1,24 @@
+<section class="file-upload">
+  <div
+    class="dropzone"
+    appDragUpload
+    (fileDropped)="onFileDropped($event)"
+    *ngIf="!file"
+  >
+    <input
+      type="file"
+      id="fileDropRef"
+      accept="image/*"
+      (change)="imageHandler($event)"
+    />
+    <span class="text">Drag & Drop files here</span>
+    <span class="text">OR</span>
+    <label class="button" for="fileDropRef">Browse for file</label>
+  </div>
+  <div class="image-wrapper" [hidden]="!file">
+    <img alt="" class="target-image" #targetImage />
+    <div class="discard-button" (click)="removeFile()">
+      <img src="./assets/icons/x.svg" alt="" />
+    </div>
+  </div>
+</section>
