@@ -2,6 +2,8 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ModalService } from 'src/app/shared/modal/modal.service';
 import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
 import { AuthService } from 'src/app/auth/shared/auth.service';
+import { Photo } from 'src/app/shared/models/photo.model';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +40,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
-    private authService: AuthService
+    private authService: AuthService,
+    private sanitizer: DomSanitizer
   ) {}
 
   get userName(): string {
@@ -75,5 +78,16 @@ export class ProfileComponent implements OnInit {
 
   openUploadModal(): void {
     const modalRef = this.modalService.open(PhotoModalComponent);
+
+    modalRef.result.then(
+      (resp: Photo) => {
+        this.dummyImages.unshift(
+          this.sanitizer.bypassSecurityTrustUrl(
+            URL.createObjectURL(resp.file!)
+          ) as string
+        );
+      },
+      () => {}
+    );
   }
 }

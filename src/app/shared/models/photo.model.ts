@@ -6,6 +6,7 @@ import {
 } from './params.model';
 
 export class Photo {
+  file?: File;
   constructor(
     public id: string,
     public attributes: PhotoAttributes,
@@ -45,8 +46,6 @@ export interface PhotoAttributes extends Timestamp {
 }
 
 export interface CreatePhotoRequest {
-  link: string;
-  user_id: string;
   category_ids: string[];
 }
 
@@ -62,6 +61,7 @@ export interface PhotoData extends ResourceID, SelfLink {
 
 export interface PhotoMeta {
   number_stars: number;
+  href: string;
 }
 
 export interface PhotoRelationships {

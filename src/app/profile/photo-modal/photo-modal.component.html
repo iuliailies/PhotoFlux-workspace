@@ -63,6 +63,7 @@
       type="submit"
       class="button"
       [disabled]="!selectedCategories.length"
+      (click)="uploadPhoto()"
     >
       <span *ngIf="!saving">Confirm</span>
       <span *ngIf="saving">Saving...</span>

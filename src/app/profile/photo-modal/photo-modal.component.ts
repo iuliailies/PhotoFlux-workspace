@@ -56,6 +56,17 @@ export class PhotoModalComponent implements OnInit {
   }
 
   uploadPhoto(): void {
-    this.photoService.uploadPhoto('', this.selectedCategories).subscribe();
+    if (!this.file) {
+      return;
+    }
+    this.photoService.uploadPhoto(this.selectedCategories, this.file).subscribe(
+      (resp) => {
+        resp.file = this.file;
+        this.activeModal.close(resp);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   }
 }
