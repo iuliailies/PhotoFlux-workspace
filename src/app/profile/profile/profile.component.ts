@@ -4,7 +4,12 @@ import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
 import { AuthService } from 'src/app/auth/shared/auth.service';
 import { Photo } from 'src/app/shared/models/photo.model';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PhotoService } from 'src/app/shared/services/photo.service';
+import { catchError, finalize, forkJoin, of } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { MinioService } from 'src/app/shared/services/minio.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -16,21 +21,12 @@ export class ProfileComponent implements OnInit {
   defaultWidth = 500;
   width: number = this.defaultWidth;
   appliedWidth: number = this.defaultWidth;
-
-  dummyImages = [
-    './assets/wallpapers/chess.jpg',
-    './assets/wallpapers/stairs.jpg',
-    './assets/wallpapers/land.jpg',
-    './assets/wallpapers/zoom.jpg',
-    './assets/wallpapers/landing.jpg',
-    './assets/wallpapers/sand.jpg',
-    './assets/wallpapers/chess.jpg',
-    './assets/wallpapers/stairs.jpg',
-    './assets/wallpapers/land.jpg',
-    './assets/wallpapers/zoom.jpg',
-    './assets/wallpapers/landing.jpg',
-    './assets/wallpapers/sand.jpg',
-  ];
+  photos: Photo[] = [];
+  numberStars = 0;
+  numberPhotos = 0;
+  loading = false;
+  error?: string;
+  URL = URL;
 
   functionBindings = {
     move: this.handleMouseMove.bind(this),
@@ -41,8 +37,12 @@ export class ProfileComponent implements OnInit {
   constructor(
     private modalService: ModalService,
     private authService: AuthService,
+    private photoService: PhotoService,
+    private minioService: MinioService,
     private sanitizer: DomSanitizer
-  ) {}
+  ) {
+    this.listPhotos();
+  }
 
   get userName(): string {
     return this.authService.user?.name || '';
@@ -52,6 +52,43 @@ export class ProfileComponent implements OnInit {
     // extra check, in case there was not enough space for the default width value
     this.width = 500 < window.innerWidth * 0.8 ? 500 : window.innerWidth * 0.8;
     this.appliedWidth = this.width;
+  }
+
+  listPhotos(): void {
+    this.loading = true;
+    this.photoService
+      .listMyPhotos()
+      .pipe(untilDestroyed(this))
+      .subscribe((resp) => {
+        this.photos = resp.data;
+        this.numberPhotos = resp.numberPhotos;
+        this.numberStars = resp.numberStars;
+        this.getPhotoFiles();
+      }, err => {
+        this.error = err;
+      });
+  }
+
+  getPhotoFiles(): void {
+    const request = this.photos.map((photo) =>
+      this.minioService.getPhoto(photo.href)
+    );
+    forkJoin(request)
+      .pipe(
+        catchError(() => of(false)),
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe((responses) => {
+        if(responses === false) {
+          this.error = 'Error while loading gallery.'
+          return;
+        }
+        (responses as any[]).forEach((resp, index) => {
+          this.photos[index].file = new File([resp], '');
+        });
+      });
   }
 
   resize(event: MouseEvent): void {
@@ -81,13 +118,13 @@ export class ProfileComponent implements OnInit {
 
     modalRef.result.then(
       (resp: Photo) => {
-        this.dummyImages.unshift(
-          this.sanitizer.bypassSecurityTrustUrl(
-            URL.createObjectURL(resp.file!)
-          ) as string
-        );
+        this.photos.unshift(resp);
       },
       () => {}
     );
+  }
+
+  sanitizeUrl(url: string): string {
+    return this.sanitizer.bypassSecurityTrustUrl(url) as string;
   }
 }

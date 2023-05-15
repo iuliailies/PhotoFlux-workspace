@@ -4,9 +4,14 @@ import { Observable, map, mergeMap } from 'rxjs';
 import {
   CreatePhotoRequest,
   CreatePhotoResponse,
+  ListMyPhotoResponse,
   Photo,
+  Photos,
 } from '../models/photo.model';
-import { generateNewPhoto } from '../helpers/photo.helpers';
+import {
+  generateNewPhoto,
+  generateNewPhotoFromListItem,
+} from '../helpers/photo.helpers';
 import { MinioService } from './minio.service';
 
 @Injectable({
@@ -31,5 +36,18 @@ export class PhotoService {
         })
       )
       .pipe(map(() => uploadedPhoto));
+  }
+
+  listMyPhotos(): Observable<Photos> {
+    return this.http.get<ListMyPhotoResponse>(this.requestURL + 'me/').pipe(
+      map((resp) => {
+        const photos: Photos = {
+          data: resp.data.map((item) => generateNewPhotoFromListItem(item)),
+          numberPhotos: resp.meta.number_photos,
+          numberStars: resp.meta.number_stars,
+        };
+        return photos;
+      })
+    );
   }
 }

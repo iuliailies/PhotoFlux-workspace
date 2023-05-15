@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UserService } from 'src/app/shared/services/user.service';
 import { generateNewUser } from 'src/app/shared/helpers/user.helpers';
+import { ModalService } from 'src/app/shared/modal/modal.service';
 
 @UntilDestroy()
 @Injectable({ providedIn: 'root' })
@@ -39,7 +40,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private usersService: UserService
+    private usersService: UserService,
+    private modalService: ModalService
   ) {
     this.data = this.token || null;
     this.authenticated = new BehaviorSubject<boolean>(this.isAuthenticated);
@@ -132,6 +134,7 @@ export class AuthService {
           this.unsetUserData();
           this.authenticated.next(this.isAuthenticated);
           this.router.navigate(['/welcome']);
+          this.modalService.dismissAll();
         })
       );
   }

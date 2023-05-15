@@ -11,6 +11,7 @@ export class Photo {
     public id: string,
     public attributes: PhotoAttributes,
     public numberStars: number,
+    public href: string,
     public categories: string[]
   ) {}
 
@@ -39,6 +40,12 @@ export class Photo {
   }
 }
 
+export interface Photos {
+  data: Photo[];
+  numberStars: number;
+  numberPhotos: number;
+}
+
 export interface PhotoAttributes extends Timestamp {
   link: string;
   userId: string;
@@ -59,11 +66,28 @@ export interface PhotoData extends ResourceID, SelfLink {
   relationships: PhotoRelationships;
 }
 
+export interface PhotoListItemData extends ResourceID, SelfLink {
+  attributes: PhotoAttributes;
+  meta: PhotoMeta;
+}
+
 export interface PhotoMeta {
   number_stars: number;
   href: string;
 }
 
+export interface PhotoListMeta {
+  number_stars: number;
+  number_photos: number;
+}
 export interface PhotoRelationships {
   categories: RelatedResources;
+}
+
+export interface ListMyPhotoRequest {}
+
+export interface ListMyPhotoResponse {
+  data: PhotoListItemData[];
+  meta: PhotoListMeta;
+  links: SelfLink;
 }

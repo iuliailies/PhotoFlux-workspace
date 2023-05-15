@@ -1,6 +1,6 @@
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 
 // service used for interaction with the minio storage, follows the presigned url approach
 // https://min.io/docs/minio/linux/integrations/presigned-put-upload-via-browser.html
@@ -17,5 +17,9 @@ export class MinioService {
 
   uploadPhoto(url: string, photo: File): Observable<any> {
     return this.http.put<any>(url, photo);
+  }
+
+  getPhoto(url: string): Observable<any> {
+    return this.http.get(url, { responseType: 'blob' });
   }
 }

@@ -20,7 +20,7 @@
                   class="photo"
                   alt=""
                 />
-                <span class="text">12</span>
+                <span class="text"> {{ numberPhotos }}</span>
               </div>
               <div class="stat">
                 <img
@@ -28,7 +28,7 @@
                   class="photo"
                   alt=""
                 />
-                <span class="text">203</span>
+                <span class="text">{{ numberStars }}</span>
               </div>
             </div>
           </div>
@@ -40,13 +40,21 @@
       </div>
       <div class="photos container">
         <span class="subtitle">Gallery</span>
-        <div class="gallery">
-          <div class="photo" *ngFor="let photo of dummyImages">
+        <app-loader *ngIf="loading"></app-loader>
+        <div class="notification is-red" *ngIf="!loading && error">
+          <span class="text">{{ error }}</span>
+        </div>
+        <div class="gallery" *ngIf="!loading && !error">
+          <div class="photo" *ngFor="let photo of photos">
             <!-- TODO: check why first profile translation is buggy -->
-            <img [src]="photo" class="photo-elem" alt="" />
+            <img
+              [src]="sanitizeUrl(URL.createObjectURL(photo.file!))"
+              class="photo-elem"
+              alt=""
+            />
             <div class="stat">
               <img [src]="'./assets/icons/star-empty-white.svg'" alt="" />
-              <span class="text">12</span>
+              <span class="text">{{ photo.numberStars }}</span>
             </div>
           </div>
         </div>
