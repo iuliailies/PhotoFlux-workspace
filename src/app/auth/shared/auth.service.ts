@@ -55,9 +55,11 @@ export class AuthService {
     if (this.loggedInUser?.id !== undefined) {
       return this.loggedInUser;
     } else {
-      this.loggedInUser = generateNewUser(
-        JSON.parse(localStorage.getItem(USER_DATA) as string)
-      );
+      const localValue = localStorage.getItem(USER_DATA);
+      if (!localValue) {
+        return this.loggedInUser;
+      }
+      this.loggedInUser = generateNewUser(JSON.parse(localValue as string));
       return this.loggedInUser;
     }
   }
