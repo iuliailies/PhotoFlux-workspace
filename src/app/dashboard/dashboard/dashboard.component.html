@@ -1,1 +1,7 @@
-<p>dashboard works!</p>
+<div class="zoomable-container">
+  <div class="create-button" *ngIf="!board">
+    <img [src]="'./assets/icons/add.svg'" alt="" />
+    <span class="text">New board</span>
+  </div>
+  <div class="zoomable" *ngIf="board"></div>
+</div>
