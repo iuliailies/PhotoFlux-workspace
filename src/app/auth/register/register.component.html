@@ -5,10 +5,7 @@
     </div>
     <div class="notification is-red" *ngIf="error">
       <img [src]="'./assets/icons/x_empty.svg'" alt="" />
-      <span class="text"
-        >Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy</span
-      >
+      <span class="text">{{ error }}</span>
     </div>
     <form
       (ngSubmit)="submit()"

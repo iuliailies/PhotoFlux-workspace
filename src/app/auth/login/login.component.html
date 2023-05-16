@@ -5,10 +5,7 @@
     </div>
     <div class="notification is-red" *ngIf="error">
       <img [src]="'./assets/icons/x_empty.svg'" alt="" />
-      <span class="text"
-        >Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy</span
-      >
+      <span class="text">{{ error }}</span>
     </div>
     <form (ngSubmit)="submit()" [formGroup]="loginForm" novalidate class="form">
       <div class="field">
@@ -62,7 +59,9 @@
         </div>
       </div>
       <div class="field justify-end">
-        <button type="submit" [disabled]="!loginForm.valid"> {{ loading ? 'Loading...' : 'Log in' }} </button>
+        <button type="submit" [disabled]="!loginForm.valid">
+          {{ loading ? "Loading..." : "Log in" }}
+        </button>
       </div>
     </form>
   </div>
