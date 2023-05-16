@@ -1,5 +1,9 @@
 <div class="zoomable-container">
-  <div class="create-button" [class.centered]="!board" (click)="board = true">
+  <div
+    class="create-button"
+    [class.centered]="!board"
+    (click)="openCreateModal()"
+  >
     <img [src]="'./assets/icons/add.svg'" alt="" />
     <span class="text">New board</span>
   </div>

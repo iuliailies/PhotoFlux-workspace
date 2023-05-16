@@ -1,0 +1,79 @@
+<div class="modal-header">
+  <div class="header-title">
+    <h1>Create board</h1>
+  </div>
+  <span
+    class="icon close-icon is-action"
+    (click)="activeModal.dismiss(false)"
+    [class.events-none]="saving"
+  >
+    <img src="./assets/icons/x.svg" alt="" />
+  </span>
+</div>
+<div class="modal-body">
+  <div class="section">
+    <div class="title">
+      <div class="label">Choose a name</div>
+    </div>
+    <div
+      class="input-field"
+      [ngClass]="{
+        'is-active': nameFocused
+      }"
+    >
+      <input
+        type="text"
+        class="input"
+        #nameInput
+        (focus)="nameFocused = true"
+        (blur)="nameFocused = false"
+        [placeholder]="namePlaceholder"
+      />
+    </div>
+  </div>
+  <div class="section">
+    <div class="title align-center">
+      <div class="label">Pick some categories</div>
+    </div>
+    <div>
+      <app-loader *ngIf="categoriesLoading"></app-loader>
+      <div class="notification is-red" *ngIf="categoriesError">
+        <span class="text"
+          >An error occured when trying to list categories.</span
+        >
+      </div>
+      <div
+        class="categories-container"
+        *ngIf="!categoriesError && categories.length"
+      >
+        <app-combobox
+          [values]="categoryOptions"
+          [(ngModel)]="selectedCategories"
+        >
+        </app-combobox>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-footer space-between">
+  <div class="align-center"></div>
+  <div class="align-center">
+    <button
+      type="button"
+      class="button is-light"
+      (click)="activeModal.dismiss(false)"
+      [disabled]="saving"
+    >
+      <span>Cancel</span>
+    </button>
+    <button
+      type="submit"
+      class="button"
+      [disabled]="!selectedCategories.length"
+      (click)="createBoard()"
+    >
+      <span *ngIf="!saving">Create</span>
+      <span *ngIf="saving">Creating...</span>
+    </button>
+  </div>
+</div>
