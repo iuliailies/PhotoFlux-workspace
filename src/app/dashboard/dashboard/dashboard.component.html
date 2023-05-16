@@ -1,5 +1,5 @@
 <div class="zoomable-container">
-  <div class="create-button" *ngIf="!board">
+  <div class="create-button" [class.centered]="!board" (click)="board = true">
     <img [src]="'./assets/icons/add.svg'" alt="" />
     <span class="text">New board</span>
   </div>

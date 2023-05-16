@@ -17,7 +17,6 @@ export class AuthWrapperComponent implements OnInit {
   isRotated = false;
 
   constructor(private auth: AuthService, private renderer: Renderer2) {
-    console.log(this.auth.prevNavigationUrl);
     this.isRotated = this.auth.prevNavigationUrl === '/register';
   }
 

@@ -110,7 +110,6 @@ export class AuthService {
     this.refreshTokenSubject.next(false);
     return this.http
       .post<any>('auth/refresh', {
-        access_token: this.accessToken,
         refresh_token: this.refreshToken,
       })
       .pipe(
@@ -143,7 +142,6 @@ export class AuthService {
     const token = this.jwt.decodeToken(tokens.access_token);
     const tokenData = { ...tokens, storedAt: Date.now() };
     this.data = { user: token, tokens: tokenData };
-    console.log(this.data);
   }
 
   setStorageData(setUserData: boolean, setAuthData: boolean): void {
