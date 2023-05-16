@@ -1,0 +1,28 @@
+<div
+  class="toasts-wrapper"
+  (mouseenter)="paused = true"
+  (mouseleave)="paused = false"
+>
+  <div
+    [@myInsertRemoveTrigger]="object.toastState"
+    [class]="object.toastState"
+    *ngFor="let object of toastObjects; let index = index"
+  >
+    <div class="toast-content">
+      <div class="toast-line" *ngFor="let line of object.toastContent">
+        <div class="toast-message" [innerHTML]="line.toastMessage"></div>
+        <button
+          class="button is-light"
+          *ngIf="line.button"
+          (click)="line.button.funcionality()"
+          [innerHtml]="(line.button.icon || '') + line.button.text"
+        ></button>
+      </div>
+    </div>
+    <div class="dismiss-area">
+      <a class="close-btn" (click)="dismissByIndex(index)">
+        <small> Dismiss </small>
+      </a>
+    </div>
+  </div>
+</div>

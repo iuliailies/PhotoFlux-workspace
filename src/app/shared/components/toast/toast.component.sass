@@ -1,0 +1,94 @@
+@import 'colours'
+
+.toasts-wrapper
+  position: absolute
+  bottom: 0px
+  right: 0px
+  display: grid
+
+%default-toast
+  margin: 5px 20px
+  display: inline-flex
+  min-width: 300px
+  min-height: 80px
+  max-width: 500px
+  box-shadow: 6px 6px 12px #00000040
+  flex-flow: row nowrap
+  align-items: center
+  justify-content: space-between
+  border-left: 1rem solid black
+  padding: 15px
+  border-radius: 5px
+  font-size: 14px
+  background-color: $background-toast
+  z-index: -1000
+
+  &:last-child
+    margin-bottom: 20px
+
+  .toast-content
+    margin: 10px
+
+    .toast-line
+      display: flex
+      align-items: center
+
+      .toast-message
+        line-height: 17px
+
+      button
+        min-width: 0
+
+        &:not(&:first-child)
+          margin: 0 7px
+
+        .image-wrapper
+          display: flex
+
+  .close-btn
+    cursor: pointer
+
+    small
+      font-size: 14px
+      color: $link-active-text
+
+// Success
+.success-toast
+  @extend %default-toast
+  border-left: 8px solid $correct-icon
+  z-index: 2000
+
+  .close-btn
+    small
+      color: $correct-icon
+
+// Warning
+.warning-toast
+  @extend %default-toast
+  border-left: 8px solid $problem-icon
+  z-index: 2000
+
+  .close-btn
+    small
+      color: $problem-icon
+
+// Danger
+.danger-toast
+  @extend %default-toast
+  border-left: 8px solid $error-icon
+  z-index: 2000
+
+  .close-btn
+    small
+      color: $error-icon
+
+
+// Toast not active
+.inactive-toast
+  @extend %default-toast
+  z-index: -1000
+
+.toasts-wrapper
+  .dismiss-area
+    position: relative
+    margin: 1rem

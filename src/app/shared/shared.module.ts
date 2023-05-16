@@ -10,6 +10,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { ApiInterceptorProvider } from './interceptors/api.interceptor';
 import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
 import { RefreshTokenInterceptorProvider } from './interceptors/refresh-token.interceptor';
+import { ToastComponent } from './components/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { RefreshTokenInterceptorProvider } from './interceptors/refresh-token.in
     DragUploadDirective,
     ComboboxComponent,
     LoaderComponent,
+    ToastComponent,
   ],
   imports: [CommonModule, ModalModule, HttpClientModule, FormsModule],
   exports: [
@@ -24,6 +26,7 @@ import { RefreshTokenInterceptorProvider } from './interceptors/refresh-token.in
     ComboboxComponent,
     LoaderComponent,
     FormsModule,
+    ToastComponent,
   ],
   providers: [
     ApiInterceptorProvider,

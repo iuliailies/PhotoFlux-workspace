@@ -8,6 +8,10 @@ import { PhotoService } from 'src/app/shared/services/photo.service';
 import { catchError, finalize, forkJoin, of } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { MinioService } from 'src/app/shared/services/minio.service';
+import {
+  TOAST_STATE,
+  ToastService,
+} from 'src/app/shared/components/toast/toast.service';
 
 @UntilDestroy()
 @Component({
@@ -39,7 +43,8 @@ export class ProfileComponent implements OnInit {
     private authService: AuthService,
     private photoService: PhotoService,
     private minioService: MinioService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private toastService: ToastService
   ) {
     this.listPhotos();
   }
@@ -59,14 +64,17 @@ export class ProfileComponent implements OnInit {
     this.photoService
       .listMyPhotos()
       .pipe(untilDestroyed(this))
-      .subscribe((resp) => {
-        this.photos = resp.data;
-        this.numberPhotos = resp.numberPhotos;
-        this.numberStars = resp.numberStars;
-        this.getPhotoFiles();
-      }, err => {
-        this.error = err;
-      });
+      .subscribe(
+        (resp) => {
+          this.photos = resp.data;
+          this.numberPhotos = resp.numberPhotos;
+          this.numberStars = resp.numberStars;
+          this.getPhotoFiles();
+        },
+        (err) => {
+          this.error = err;
+        }
+      );
   }
 
   getPhotoFiles(): void {
@@ -81,8 +89,8 @@ export class ProfileComponent implements OnInit {
         })
       )
       .subscribe((responses) => {
-        if(responses === false) {
-          this.error = 'Error while loading gallery.'
+        if (responses === false) {
+          this.error = 'Error while loading gallery.';
           return;
         }
         (responses as any[]).forEach((resp, index) => {
@@ -119,6 +127,9 @@ export class ProfileComponent implements OnInit {
     modalRef.result.then(
       (resp: Photo) => {
         this.photos.unshift(resp);
+        this.toastService.showToast(TOAST_STATE.success, [
+          { toastMessage: `<div>Photo successfully uploaded.</div>` },
+        ]);
       },
       () => {}
     );
