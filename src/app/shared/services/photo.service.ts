@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map, mergeMap } from 'rxjs';
 import {
   CreatePhotoRequest,
   CreatePhotoResponse,
   ListMyPhotoResponse,
+  ListPhotosResponse,
   Photo,
   Photos,
+  PhotosPerCategory,
 } from '../models/photo.model';
 import {
   generateNewPhoto,
@@ -45,6 +47,19 @@ export class PhotoService {
           data: resp.data.map((item) => generateNewPhotoFromListItem(item)),
           numberPhotos: resp.meta.number_photos,
           numberStars: resp.meta.number_stars,
+        };
+        return photos;
+      })
+    );
+  }
+
+  listPhotos(categoryId: string): Observable<PhotosPerCategory> {
+    const params = { params: new HttpParams().set('category', categoryId) };
+    return this.http.get<ListPhotosResponse>(this.requestURL, params).pipe(
+      map((resp) => {
+        const photos: PhotosPerCategory = {
+          data: resp.data.map((item) => generateNewPhotoFromListItem(item)),
+          categoryName: resp.meta.category_name,
         };
         return photos;
       })

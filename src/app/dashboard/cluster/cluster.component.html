@@ -1,0 +1,17 @@
+<div class="cluster">
+  <div class="header justify-center">
+    <div class="action-icons">
+      <div class="action-icon">
+        <i class="fa-solid fa-arrow-left"></i>
+      </div>
+    </div>
+    <span class="name">{{ categoryName }}</span>
+  </div>
+  <div class="content">
+    <div class="gallery" *ngIf="!loading && !error && photos.length">
+      <div class="photo" *ngFor="let photo of photos.slice(5)">
+        <img [src]="photo.url!" class="photo-elem" alt="" />
+      </div>
+    </div>
+  </div>
+</div>

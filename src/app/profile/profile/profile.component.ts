@@ -30,7 +30,6 @@ export class ProfileComponent implements OnInit {
   numberPhotos = 0;
   loading = false;
   error?: string;
-  URL = URL;
 
   functionBindings = {
     move: this.handleMouseMove.bind(this),
@@ -95,6 +94,9 @@ export class ProfileComponent implements OnInit {
         }
         (responses as any[]).forEach((resp, index) => {
           this.photos[index].file = new File([resp], '');
+          this.photos[index].url = this.sanitizeUrl(
+            URL.createObjectURL(this.photos[index].file!)
+          );
         });
       });
   }

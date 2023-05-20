@@ -7,6 +7,7 @@ import {
 
 export class Photo {
   file?: File;
+  url?: string;
   constructor(
     public id: string,
     public attributes: PhotoAttributes,
@@ -46,6 +47,11 @@ export interface Photos {
   numberPhotos: number;
 }
 
+export interface PhotosPerCategory {
+  data: Photo[];
+  categoryName: string;
+}
+
 export interface PhotoAttributes extends Timestamp {
   link: string;
   userId: string;
@@ -77,6 +83,10 @@ export interface PhotoMeta {
 }
 
 export interface PhotoListMeta {
+  category_name: string;
+}
+
+export interface MyPhotoListMeta {
   number_stars: number;
   number_photos: number;
 }
@@ -87,6 +97,12 @@ export interface PhotoRelationships {
 export interface ListMyPhotoRequest {}
 
 export interface ListMyPhotoResponse {
+  data: PhotoListItemData[];
+  meta: MyPhotoListMeta;
+  links: SelfLink;
+}
+
+export interface ListPhotosResponse {
   data: PhotoListItemData[];
   meta: PhotoListMeta;
   links: SelfLink;

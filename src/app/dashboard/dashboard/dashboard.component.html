@@ -1,4 +1,4 @@
-<div class="zoomable-container">
+<div class="zoomable-container" #zoomableContainer>
   <div
     class="create-button"
     [class.centered]="!board"
@@ -7,5 +7,37 @@
     <img [src]="'./assets/icons/add.svg'" alt="" />
     <span class="text">New board</span>
   </div>
-  <div class="zoomable" *ngIf="board"></div>
+  <div class="zoomable" *ngIf="board" #zoomable>
+    <!-- <div
+      class="cluster"
+      *ngFor="let category of board.categoryIds; let i = index"
+    >
+      <div class="header justify-center">
+        <div class="action-icons">
+          <div class="action-icon">
+            <i class="fa-solid fa-arrow-left"></i>
+          </div>
+        </div>
+        <span class="name">{{ category }}</span>
+      </div>
+      <div class="content">
+        <div
+          class="gallery"
+          *ngIf="!photosLoading && !photosError && board.photos[i]"
+        >
+          <div class="photo" *ngFor="let photo of board.photos[i].slice(5)">
+            <img [src]="photo.url!" class="photo-elem" alt="" />
+            <div class="stat">
+              <img [src]="'./assets/icons/star-empty-white.svg'" alt="" />
+              <span class="text">{{ photo.numberStars }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <app-cluster
+      *ngFor="let cluster of board.clusters"
+      [cluster]="cluster"
+    ></app-cluster>
+  </div>
 </div>
