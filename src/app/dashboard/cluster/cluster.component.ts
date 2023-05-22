@@ -14,6 +14,7 @@ import { PhotoService } from 'src/app/shared/services/photo.service';
 export class ClusterComponent implements OnInit {
   @Input() cluster!: Cluster;
   photos: Photo[] = [];
+  displayedPhotos: Photo[] = [];
   categoryName!: string;
   loading = true;
   error = false;
@@ -34,6 +35,7 @@ export class ClusterComponent implements OnInit {
     forkJoin(requests).subscribe((responses) => {
       responses.forEach((resp) => {
         this.photos = resp.data;
+        this.displayedPhotos = this.photos.slice(0, 3);
         this.categoryName = resp.categoryName;
         this.getPhotoFiles();
       });
@@ -48,7 +50,10 @@ export class ClusterComponent implements OnInit {
       .pipe(
         catchError(() => of(false)),
         finalize(() => {
-          this.loading = false;
+          // leave time for photos to load nicely
+          setTimeout(() => {
+            this.loading = false;
+          }, 1500);
         })
       )
       .subscribe((responses) => {

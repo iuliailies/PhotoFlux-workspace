@@ -28,9 +28,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   photosError = false;
 
   constructor(
-    private modalService: ModalService // private photoService: PhotoService, // private minioService: MinioService,
-  ) // private sanitizer: DomSanitizer
-  {}
+    private modalService: ModalService // private photoService: PhotoService, // private minioService: MinioService, // private sanitizer: DomSanitizer
+  ) {}
 
   ngOnInit(): void {}
 
@@ -43,7 +42,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (!this.board) return;
 
     this.zoomEnv = canvaSketcher
-      .zoom(this.zoomableContainer.nativeElement, this.zoomable.nativeElement)
+      .zoom(
+        this.zoomableContainer.nativeElement,
+        this.zoomable.nativeElement,
+        1
+      )
       .apply({
         lowerBound: 1,
         upperBound: 1,
@@ -63,7 +66,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   sketch(): void {
     if (!this.board || !this.zoomEnv) return;
 
-    const clusters = canvaSketcher.selectAll('.cluster').draggable();
+    const clusters = canvaSketcher.selectAll('.cluster');
+    const dragEnv = new canvaSketcher.DragEnvironment().apply(clusters);
     const zoomEnv = this.zoomEnv;
 
     clusters.on('dblclick', function () {
@@ -81,6 +85,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         )
         .on('AnimationOpenStart', function () {
           this.element.classList.add('focusing');
+          dragEnv.disabled = true;
         })
         .on('AnimationOpenEnd', function () {
           this.element.classList.remove('focusing');
@@ -88,6 +93,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         })
         .on('AnimationCloseStart', function () {
           this.element.classList.remove('focused');
+          dragEnv.disabled = false;
         });
     });
   }

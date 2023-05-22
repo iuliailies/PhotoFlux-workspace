@@ -5,13 +5,20 @@
         <i class="fa-solid fa-arrow-left"></i>
       </div>
     </div>
-    <span class="name">{{ categoryName }}</span>
+    <span class="name">{{ categoryName || "..." }}</span>
   </div>
   <div class="content">
+    <app-loader *ngIf="loading"></app-loader>
     <div class="gallery" *ngIf="!loading && !error && photos.length">
-      <div class="photo" *ngFor="let photo of photos.slice(5)">
+      <div class="photo" *ngFor="let photo of photos.slice(0, 3)">
         <img [src]="photo.url!" class="photo-elem" alt="" />
       </div>
+    </div>
+    <div class="notification" *ngIf="!loading && !error && !photos.length">
+      <span class="text">No photos uploaded under this category</span>
+    </div>
+    <div class="notification is-red" *ngIf="!loading && error">
+      <span class="text">An error occured while loading the photos.</span>
     </div>
   </div>
 </div>
