@@ -27,6 +27,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   panEnv?: canvaSketcher.PanEnvironment;
   photosLoading = false;
   photosError = false;
+  zoom: number = 1;
+  clusterWidth = 300;
+  clusterHeight = 300;
+  clusterMargin = 10;
 
   constructor(
     private modalService: ModalService // private photoService: PhotoService, // private minioService: MinioService, // private sanitizer: DomSanitizer
@@ -56,12 +60,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           ctrlKey: true,
         },
       })
-      .on(
-        'zoom',
-        function (ev: Event, zoom: number, target: HTMLElement | any) {
-          ev.preventDefault();
-        }
-      );
+      .on('zoom', (ev: Event, zoom: number) => {
+        ev.preventDefault();
+        this.zoom = zoom;
+      });
 
     this.panEnv = this.zoomEnv
       .pannable()
@@ -117,6 +119,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     modalRef.result.then(
       (resp) => {
         this.board = resp;
+        this.arrangeClusters();
         // this.getPhotos();
         // make call assynchronous, such that the clusters can be rendered first
         setTimeout(() => {
@@ -128,45 +131,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     );
   }
 
-  // getPhotos(): void {
-  //   if (!this.board) return;
-  //   const requests = this.board.categoryIds.map((cId) =>
-  //     this.photoService.listPhotos(cId)
-  //   );
-  //   this.photosLoading = true;
-  //   forkJoin(requests).subscribe((responses) => {
-  //     responses.forEach((resp, index) => {
-  //       this.board!.photos[index] = resp.data;
-  //       this.getPhotoFiles(index);
-  //     });
-  //   });
-  // }
+  arrangeClusters(): void {
+    if (!this.board) {
+      return;
+    }
 
-  // getPhotoFiles(clusterIndex: number): void {
-  //   const request = this.board!.photos[clusterIndex].map((photo) =>
-  //     this.minioService.getPhoto(photo.href)
-  //   );
-  //   forkJoin(request)
-  //     .pipe(
-  //       catchError(() => of(false)),
-  //       finalize(() => {
-  //         this.photosLoading = false;
-  //       })
-  //     )
-  //     .subscribe((responses) => {
-  //       if (responses === false) {
-  //         return;
-  //       }
-  //       (responses as any[]).forEach((resp, index) => {
-  //         this.board!.photos[clusterIndex][index].file = new File([resp], '');
-  //         this.board!.photos[clusterIndex][index].url = this.sanitizeUrl(
-  //           URL.createObjectURL(this.board!.photos[clusterIndex][index].file!)
-  //         );
-  //       });
-  //     });
-  // }
+    const availableWidth =
+      (this.zoomableContainer.nativeElement as HTMLElement).offsetWidth /
+      this.zoom;
+    const clustersPerRow = Math.floor(
+      availableWidth / (this.clusterWidth + this.clusterMargin)
+    );
 
-  // sanitizeUrl(url: string): string {
-  //   return this.sanitizer.bypassSecurityTrustUrl(url) as string;
-  // }
+    this.board!.clusters.forEach((cluster, index) => {
+      cluster.position.x =
+        Math.floor(index % clustersPerRow) *
+          (this.clusterWidth + this.clusterMargin) +
+        this.clusterMargin;
+      cluster.position.y =
+        Math.floor(index / clustersPerRow) *
+          (this.clusterHeight + this.clusterMargin) +
+        this.clusterMargin;
+    });
+  }
 }

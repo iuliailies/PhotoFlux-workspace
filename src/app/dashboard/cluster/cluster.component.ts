@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { catchError, finalize, forkJoin, of } from 'rxjs';
 import {
@@ -16,7 +23,8 @@ import { StarService } from 'src/app/shared/services/star.service';
   templateUrl: './cluster.component.html',
   styleUrls: ['./cluster.component.sass'],
 })
-export class ClusterComponent implements OnInit {
+export class ClusterComponent implements OnInit, AfterViewInit {
+  @ViewChild('clusterElement') clusterElement!: ElementRef;
   @Input() cluster!: Cluster;
   photos: Photo[] = [];
   displayedPhotos: Photo[] = [];
@@ -34,6 +42,13 @@ export class ClusterComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPhotos();
+  }
+
+  ngAfterViewInit(): void {
+    (this.clusterElement!.nativeElement as HTMLElement).style.left =
+      this.cluster.position.x + 'px';
+    (this.clusterElement!.nativeElement as HTMLElement).style.top =
+      this.cluster.position.y + 'px';
   }
 
   getPhotos(): void {
