@@ -11,7 +11,7 @@ $padding-unfocused: 10px
     cursor: pointer
     box-shadow: $box-shadow-light
 
-    .header
+    .cluster-header
         transition: all $transition-duration
         padding: $padding-unfocused
         border-bottom: 1px solid $border-primary
@@ -40,6 +40,8 @@ $padding-unfocused: 10px
             font-size: 80%
 
     &.focused
+        cursor: auto
+
         .action-icons
             opacity: 1
             pointer-events: all
@@ -61,12 +63,46 @@ $padding-unfocused: 10px
                     width: 15px
                     height: 15px
 
-    .content
+    .cluster-body
+        width: 100%
+
         .gallery
             padding: $padding-unfocused
             justify-content: center
             align-items: center
 
             .photo
+                position: relative
                 min-height: 70px
                 max-height: 90px
+                cursor: auto
+
+                .stat
+                    position: absolute
+                    display: flex
+                    left: 0%
+                    bottom: 0%
+                    width: 100%
+                    background: $background-stat-transparent
+                    border-bottom-left-radius: $border-radius
+                    border-bottom-right-radius: $border-radius
+                    display: none
+
+    &.focused
+        .cluster-body
+            .gallery
+                .photo
+                    .stat
+                        display: flex
+                        align-items: center
+
+                        span
+                            font-size: 80%
+                            color: $white
+
+                        img
+                            width: 8px
+                            height: 8px
+                            margin-left: 3px
+                            cursor: pointer
+

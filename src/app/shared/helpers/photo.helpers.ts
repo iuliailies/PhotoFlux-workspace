@@ -9,6 +9,7 @@ export const generateNewPhoto = (resp: CreatePhotoResponse): Photo => {
     resp.data.id,
     resp.data.attributes,
     resp.data.meta.number_stars,
+    false, // photo is definetely not starred right when created
     resp.data.meta.href,
     resp.data.relationships.categories.data.map((data) => data.id)
   );
@@ -16,8 +17,17 @@ export const generateNewPhoto = (resp: CreatePhotoResponse): Photo => {
   return p;
 };
 
-export const generateNewPhotoFromListItem = (resp: PhotoListItemData): Photo => {
-  const p = new Photo(resp.id, resp.attributes, resp.meta.number_stars, resp.meta.href, []);
+export const generateNewPhotoFromListItem = (
+  resp: PhotoListItemData
+): Photo => {
+  const p = new Photo(
+    resp.id,
+    resp.attributes,
+    resp.meta.number_stars,
+    resp.meta.starred_by_user,
+    resp.meta.href,
+    []
+  );
 
   return p;
 };

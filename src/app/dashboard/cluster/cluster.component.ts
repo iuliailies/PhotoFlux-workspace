@@ -1,10 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { catchError, finalize, forkJoin, of } from 'rxjs';
+import {
+  TOAST_STATE,
+  ToastService,
+} from 'src/app/shared/components/toast/toast.service';
 import { Cluster } from 'src/app/shared/models/board.model';
 import { Photo } from 'src/app/shared/models/photo.model';
 import { MinioService } from 'src/app/shared/services/minio.service';
 import { PhotoService } from 'src/app/shared/services/photo.service';
+import { StarService } from 'src/app/shared/services/star.service';
 
 @Component({
   selector: 'app-cluster',
@@ -21,8 +26,10 @@ export class ClusterComponent implements OnInit {
 
   constructor(
     private photoService: PhotoService,
+    private starService: StarService,
     private minioService: MinioService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +74,20 @@ export class ClusterComponent implements OnInit {
           );
         });
       });
+  }
+
+  starPhoto(photo: Photo): void {
+    this.starService.starPhoto(photo.id).subscribe(
+      (resp) => {
+        photo.starred = resp;
+        photo.numberStars += resp ? 1 : -1;
+      },
+      (err) => {
+        this.toastService.showToast(TOAST_STATE.danger, [
+          { toastMessage: `<div>Error starring photo.</div>` },
+        ]);
+      }
+    );
   }
 
   sanitizeUrl(url: string): string {

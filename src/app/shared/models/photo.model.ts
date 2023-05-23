@@ -12,6 +12,7 @@ export class Photo {
     public id: string,
     public attributes: PhotoAttributes,
     public numberStars: number,
+    public starred: boolean,
     public href: string,
     public categories: string[]
   ) {}
@@ -80,6 +81,7 @@ export interface PhotoListItemData extends ResourceID, SelfLink {
 export interface PhotoMeta {
   number_stars: number;
   href: string;
+  starred_by_user: boolean;
 }
 
 export interface PhotoListMeta {
