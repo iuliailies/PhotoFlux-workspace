@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   @ViewChild('zoomable') zoomable!: ElementRef;
   board?: Board;
   zoomEnv?: canvaSketcher.ZoomEnvironment;
+  panEnv?: canvaSketcher.PanEnvironment;
   photosLoading = false;
   photosError = false;
 
@@ -48,8 +49,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         1
       )
       .apply({
-        lowerBound: 1,
-        upperBound: 1,
+        lowerBound: 0.5,
+        upperBound: 2,
         method: {
           type: 'mouse',
           ctrlKey: true,
@@ -61,6 +62,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           ev.preventDefault();
         }
       );
+
+    this.panEnv = this.zoomEnv
+      .pannable()
+      .on('start', () => {
+        this.zoomableContainer.nativeElement.classList.add('panning');
+      })
+      .on('end', () => {
+        this.zoomableContainer.nativeElement.classList.remove('panning');
+      });
   }
 
   sketch(): void {
@@ -69,6 +79,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     const clusters = canvaSketcher.selectAll('.cluster');
     const dragEnv = new canvaSketcher.DragEnvironment().apply(clusters);
     const zoomEnv = this.zoomEnv;
+    const panEnv = this.panEnv;
 
     clusters.on('dblclick', function () {
       zoomEnv
@@ -86,6 +97,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         .on('AnimationOpenStart', function () {
           this.element.classList.add('focusing');
           dragEnv.disabled = true;
+          panEnv!.disabled = true;
         })
         .on('AnimationOpenEnd', function () {
           this.element.classList.remove('focusing');
@@ -94,6 +106,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         .on('AnimationCloseStart', function () {
           this.element.classList.remove('focused');
           dragEnv.disabled = false;
+          panEnv!.disabled = false;
         });
     });
   }

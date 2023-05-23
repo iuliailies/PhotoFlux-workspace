@@ -7,9 +7,12 @@
     background-size: 4em 4em,4em 4em,1em 1em,1em 1em,.5em .5em,.5em .5em
 
     .zoomable
+        position: absolute
         display: inline-block
         width: 100%
         height: 99%
         transform: scale(1)
         transform-origin: 0 0
-        overflow: hidden
+
+    &.panning
+        cursor: grabbing
