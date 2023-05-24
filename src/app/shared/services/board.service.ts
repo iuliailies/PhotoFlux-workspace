@@ -40,4 +40,20 @@ export class BoardService {
       .post<CreateBoardResponse>(this.requestURL, { data: JSON.stringify(req) })
       .pipe(map((resp) => new Board(resp.data)));
   }
+
+  updateBoard(
+    id: string,
+    name: string,
+    clusters: Cluster[]
+  ): Observable<Board> {
+    const req: BoardAttributes = {
+      name: name,
+      data: clusters,
+    };
+    return this.http
+      .patch<CreateBoardResponse>(this.requestURL + id, {
+        data: JSON.stringify(req),
+      })
+      .pipe(map((resp) => new Board(resp.data)));
+  }
 }

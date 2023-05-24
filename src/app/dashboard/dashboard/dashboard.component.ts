@@ -9,10 +9,11 @@ import { ModalService } from 'src/app/shared/modal/modal.service';
 import { CreateDashboardModalComponent } from '../create-dashboard-modal/create-dashboard-modal.component';
 import { Board } from 'src/app/shared/models/board.model';
 import * as canvaSketcher from '@iuliailies/canva-sketcher';
-import { PhotoService } from 'src/app/shared/services/photo.service';
-import { catchError, finalize, forkJoin, of } from 'rxjs';
-import { MinioService } from 'src/app/shared/services/minio.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { BoardService } from 'src/app/shared/services/board.service';
+import {
+  TOAST_STATE,
+  ToastService,
+} from 'src/app/shared/components/toast/toast.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -33,7 +34,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   clusterMargin = 10;
 
   constructor(
-    private modalService: ModalService // private photoService: PhotoService, // private minioService: MinioService, // private sanitizer: DomSanitizer
+    private modalService: ModalService,
+    private boardService: BoardService,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {}
@@ -77,9 +80,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   sketch(): void {
     if (!this.board || !this.zoomEnv) return;
+    let self = this;
 
     const clusters = canvaSketcher.selectAll('.cluster');
-    const dragEnv = new canvaSketcher.DragEnvironment().apply(clusters);
+    const dragEnv = new canvaSketcher.DragEnvironment()
+      .apply(clusters, { threshold: 100, disableEvents: true })
+      .on('end', function (eventObj: Event, data: any, index: number) {
+        self.board!.clusters[index]!.position = {
+          x: parseInt(this.style.left, 10) || 0,
+          y: parseInt(this.style.top, 10) || 0,
+        };
+        self.updateBoard();
+      });
     const zoomEnv = this.zoomEnv;
     const panEnv = this.panEnv;
 
@@ -129,6 +141,19 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       },
       () => {}
     );
+  }
+
+  updateBoard(): void {
+    this.boardService
+      .updateBoard(this.board!.board.id, this.board!.name, this.board!.clusters)
+      .subscribe(
+        (resp) => {},
+        (error) => {
+          this.toastService.showToast(TOAST_STATE.danger, [
+            { toastMessage: `<div>Error updating board layout.</div>` },
+          ]);
+        }
+      );
   }
 
   arrangeClusters(): void {

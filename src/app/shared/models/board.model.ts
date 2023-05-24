@@ -78,3 +78,11 @@ export interface CreateBoardRequest {
 export interface CreateBoardResponse {
   data: IBoard;
 }
+
+export interface UpdateBoardRequest {
+  data: string;
+}
+
+export interface UpdateBoardResponse {
+  data: IBoard;
+}
