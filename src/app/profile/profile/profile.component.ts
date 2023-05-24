@@ -128,6 +128,7 @@ export class ProfileComponent implements OnInit {
 
     modalRef.result.then(
       (resp: Photo) => {
+        resp.url = this.sanitizeUrl(URL.createObjectURL(resp.file!));
         this.photos.unshift(resp);
         this.toastService.showToast(TOAST_STATE.success, [
           { toastMessage: `<div>Photo successfully uploaded.</div>` },
