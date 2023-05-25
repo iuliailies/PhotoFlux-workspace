@@ -1,7 +1,7 @@
 <div class="zoomable-container" #zoomableContainer>
   <div
-    class="create-button"
-    [class.centered]="!board"
+    class="create-button is-large"
+    *ngIf="!board"
     (click)="openCreateModal()"
   >
     <img [src]="'./assets/icons/add.svg'" alt="" />
