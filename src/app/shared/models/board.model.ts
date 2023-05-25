@@ -14,6 +14,10 @@ export class Board {
     this.attributes = JSON.parse(this.board.data) as BoardAttributes;
   }
 
+  get id(): string {
+    return this.board.id;
+  }
+
   get name(): string {
     return this.attributes.name;
   }
@@ -84,5 +88,5 @@ export interface UpdateBoardRequest {
 }
 
 export interface UpdateBoardResponse {
-  data: IBoard;
+  data: string;
 }

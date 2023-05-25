@@ -22,6 +22,11 @@ export class CreateDashboardModalComponent implements OnInit {
   categoriesError?: string;
   nameFocused = false;
   namePlaceholder = 'New Board';
+  clusters: Cluster[] = [];
+  clusterWidth = 300;
+  clusterHeight = 300;
+  clusterMargin = 10;
+  navWidth = 70;
 
   constructor(
     public activeModal: ActiveModal,
@@ -62,9 +67,9 @@ export class CreateDashboardModalComponent implements OnInit {
     if (!this.selectedCategories.length) {
       return;
     }
-    let clusters: Cluster[] = [];
+    this.clusters = [];
     this.selectedCategories.forEach((category) => {
-      clusters.push({
+      this.clusters.push({
         category: category,
         position: {
           x: 0,
@@ -72,10 +77,13 @@ export class CreateDashboardModalComponent implements OnInit {
         },
       });
     });
+
+    this.arrangeClusters();
+
     this.boardService
       .createBoard(
         this.nameInput.nativeElement.value || this.namePlaceholder,
-        clusters
+        this.clusters
       )
       .subscribe(
         (resp) => {
@@ -85,5 +93,23 @@ export class CreateDashboardModalComponent implements OnInit {
           console.log(err);
         }
       );
+  }
+
+  arrangeClusters(): void {
+    const availableWidth = document.documentElement.offsetWidth - this.navWidth;
+    const clustersPerRow = Math.floor(
+      availableWidth / (this.clusterWidth + this.clusterMargin)
+    );
+
+    this.clusters.forEach((cluster, index) => {
+      cluster.position.x =
+        Math.floor(index % clustersPerRow) *
+          (this.clusterWidth + this.clusterMargin) +
+        this.clusterMargin;
+      cluster.position.y =
+        Math.floor(index / clustersPerRow) *
+          (this.clusterHeight + this.clusterMargin) +
+        this.clusterMargin;
+    });
   }
 }

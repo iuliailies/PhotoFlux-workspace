@@ -10,7 +10,7 @@
           </div>
         </div>
       </div>
-      <button class="is-transparent create-button">
+      <button class="is-transparent create-button" (click)="openCreateModal()">
         <img [src]="'./assets/icons/add.svg'" class="photo" alt="" />
         <span class="text">New Board</span>
       </button>
@@ -29,6 +29,11 @@
           >Gather some inspiration by creating your customized boards.</span
         >
       </div>
+      <app-board-list-item
+        *ngFor="let board of boards"
+        [board]="board"
+        (click)="openBoard(board.id)"
+      ></app-board-list-item>
     </div>
   </div>
 </div>

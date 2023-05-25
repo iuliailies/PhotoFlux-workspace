@@ -5,10 +5,10 @@ import {
   Board,
   BoardAttributes,
   Cluster,
-  CreateBoardRequest,
   CreateBoardResponse,
   GetBoardResponse,
   ListBoardsResponse,
+  UpdateBoardResponse,
 } from '../models/board.model';
 
 @Injectable({
@@ -41,19 +41,13 @@ export class BoardService {
       .pipe(map((resp) => new Board(resp.data)));
   }
 
-  updateBoard(
-    id: string,
-    name: string,
-    clusters: Cluster[]
-  ): Observable<Board> {
+  updateBoard(id: string, name: string, clusters: Cluster[]): Observable<any> {
     const req: BoardAttributes = {
       name: name,
       data: clusters,
     };
-    return this.http
-      .patch<CreateBoardResponse>(this.requestURL + id, {
-        data: JSON.stringify(req),
-      })
-      .pipe(map((resp) => new Board(resp.data)));
+    return this.http.patch<UpdateBoardResponse>(this.requestURL + id, {
+      data: JSON.stringify(req),
+    });
   }
 }

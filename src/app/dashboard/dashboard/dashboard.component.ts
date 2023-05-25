@@ -1,10 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalService } from 'src/app/shared/modal/modal.service';
 import { CreateDashboardModalComponent } from '../create-dashboard-modal/create-dashboard-modal.component';
 import { Board } from 'src/app/shared/models/board.model';
@@ -14,36 +8,69 @@ import {
   TOAST_STATE,
   ToastService,
 } from 'src/app/shared/components/toast/toast.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.sass'],
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
+export class DashboardComponent implements OnInit {
   @ViewChild('zoomableContainer') zoomableContainer!: ElementRef;
   @ViewChild('zoomable') zoomable!: ElementRef;
+  id?: string;
   board?: Board;
   zoomEnv?: canvaSketcher.ZoomEnvironment;
   panEnv?: canvaSketcher.PanEnvironment;
   photosLoading = false;
   photosError = false;
   zoom: number = 1;
-  clusterWidth = 300;
-  clusterHeight = 300;
-  clusterMargin = 10;
 
   constructor(
     private modalService: ModalService,
     private boardService: BoardService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id') as string;
+    if (this.id) {
+      this.getBoard();
+    }
+    this.router.events
+      .pipe(
+        filter((ev) => ev instanceof NavigationEnd),
+        untilDestroyed(this)
+      )
+      .subscribe(() => {
+        this.id = this.route.snapshot.paramMap.get('id') as string;
+        if (this.id) {
+          this.getBoard();
+        }
+      });
+  }
 
-  ngAfterViewInit(): void {
-    this.initializeZoomEnvironment();
-    this.sketch();
+  getBoard(): void {
+    if (!this.id) return;
+    this.boardService.getBoard(this.id).subscribe(
+      (resp) => {
+        this.board = resp;
+        setTimeout(() => {
+          this.initializeZoomEnvironment();
+          this.sketch();
+        });
+      },
+      (err) => {
+        this.toastService.showToast(TOAST_STATE.danger, [
+          { toastMessage: `<div>Error loading board data.</div>` },
+        ]);
+      }
+    );
   }
 
   initializeZoomEnvironment(): void {
@@ -131,8 +158,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     modalRef.result.then(
       (resp) => {
         this.board = resp;
-        this.arrangeClusters();
-        // this.getPhotos();
         // make call assynchronous, such that the clusters can be rendered first
         setTimeout(() => {
           this.initializeZoomEnvironment();
@@ -154,29 +179,5 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           ]);
         }
       );
-  }
-
-  arrangeClusters(): void {
-    if (!this.board) {
-      return;
-    }
-
-    const availableWidth =
-      (this.zoomableContainer.nativeElement as HTMLElement).offsetWidth /
-      this.zoom;
-    const clustersPerRow = Math.floor(
-      availableWidth / (this.clusterWidth + this.clusterMargin)
-    );
-
-    this.board!.clusters.forEach((cluster, index) => {
-      cluster.position.x =
-        Math.floor(index % clustersPerRow) *
-          (this.clusterWidth + this.clusterMargin) +
-        this.clusterMargin;
-      cluster.position.y =
-        Math.floor(index / clustersPerRow) *
-          (this.clusterHeight + this.clusterMargin) +
-        this.clusterMargin;
-    });
   }
 }

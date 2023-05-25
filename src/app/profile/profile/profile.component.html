@@ -9,7 +9,10 @@
 >
   <div class="flex-container">
     <app-portfolio [hidden]="!isPortfolioOpen"></app-portfolio>
-    <app-boards [hidden]="!isBoardsOpen"></app-boards>
+    <app-boards
+      [hidden]="!isBoardsOpen"
+      (closeMe)="isBoardsOpen = false"
+    ></app-boards>
     <div class="expandable" (mousedown)="resize($event)"></div>
   </div>
 </section>
