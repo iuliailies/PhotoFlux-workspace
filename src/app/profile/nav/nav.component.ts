@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/auth/shared/auth.service';
 export class NavComponent implements OnInit {
   @Output() profileClickedEvent = new EventEmitter();
   @Output() boardsClickedEvent = new EventEmitter();
-  profileOpen = false;
+  portfolioOpen = false;
   boardsOpen = false;
 
   constructor(private authService: AuthService) {}
@@ -22,26 +22,29 @@ export class NavComponent implements OnInit {
       : '';
   }
 
-  clickProfile(): void {
+  clickPortfolio(): void {
     this.profileClickedEvent.emit();
     if (this.boardsOpen) {
       this.clickBoards();
     }
     this.boardsOpen = false;
-    this.profileOpen = !this.profileOpen;
+    this.portfolioOpen = !this.portfolioOpen;
   }
 
   clickBoards(): void {
     this.boardsClickedEvent.emit();
-    if (this.profileOpen) {
-      this.clickProfile();
+    if (this.portfolioOpen) {
+      this.clickPortfolio();
     }
     this.boardsOpen = !this.boardsOpen;
   }
 
   logout(): void {
-    if (this.profileOpen) {
-      this.clickProfile();
+    if (this.portfolioOpen) {
+      this.clickPortfolio();
+    }
+    if (this.boardsOpen) {
+      this.clickBoards();
     }
     this.authService.logout().subscribe();
   }

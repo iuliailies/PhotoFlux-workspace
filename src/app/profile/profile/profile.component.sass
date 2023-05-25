@@ -18,49 +18,8 @@
         display: flex
         height: 100%
 
-        .profile-info
+        app-portfolio, app-boards
             width: 100%
-
-            .info
-                .name
-                    font-size: 16px
-
-            .photos
-                .subtitle
-                    display: flex
-                    font-size: 12px
-                    text-transform: uppercase
-                    padding-bottom: 10px
-
-                .notification
-                    max-width: 800px
-
-                .gallery
-                    .photo
-                        position: relative
-
-                        img
-                            transition: filter .2s
-
-                        .stat
-                            position: absolute
-                            left: 50%
-                            top: 50%
-                            transform: translate(-50%, -50%)
-                            display: none
-
-                            img
-                                width: 12px
-                                height: 12px
-
-                        &:hover
-                            .photo-elem
-                                filter: brightness(60%)
-                            .stat
-                                display: flex
-                                z-index: 1000
-                                color: $white
-
 
         .expandable
             height: 100%
@@ -80,3 +39,5 @@
         .flex-container
             .expandable
                 background-color: $cool-blue
+
+

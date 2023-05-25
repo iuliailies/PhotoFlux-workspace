@@ -2,9 +2,13 @@
   <div class="nav-top nav-section">
     <img [src]="'./assets/icons/logo-camera-white.png'" class="icon" alt="" />
   </div>
-  <div class="nav-content nav-section" [class.profile-open]="profileOpen">
+  <div
+    class="nav-content nav-section"
+    [class.portfolio-open]="portfolioOpen"
+    [class.boards-open]="boardsOpen"
+  >
     <div class="profile-toggle">
-      <div class="nav-icon user-icon" (click)="clickProfile()">
+      <div class="nav-icon user-icon" (click)="clickPortfolio()">
         <span class="text">{{ userInitials }}</span>
         <img [src]="'./assets/icons/arrow.svg'" class="arrow" alt="" />
       </div>

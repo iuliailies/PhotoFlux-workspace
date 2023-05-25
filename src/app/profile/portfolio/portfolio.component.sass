@@ -1,0 +1,29 @@
+@import 'colours'
+@import 'variables'
+
+.profile-content
+    .gallery
+        .photo
+            position: relative
+
+            img
+                transition: filter .2s
+
+            .stat
+                position: absolute
+                left: 50%
+                top: 50%
+                transform: translate(-50%, -50%)
+                display: none
+
+                img
+                    width: 12px
+                    height: 12px
+
+            &:hover
+                .photo-elem
+                    filter: brightness(60%)
+                .stat
+                    display: flex
+                    z-index: 1000
+                    color: $white

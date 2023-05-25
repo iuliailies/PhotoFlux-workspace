@@ -1,0 +1,34 @@
+<div class="profile-info clim-scroll">
+  <div class="info container">
+    <div class="space-between">
+      <div>
+        <div class="name">{{ userName }}</div>
+        <div class="statistics justify-start">
+          <div class="stat">
+            <img [src]="'./assets/icons/gallery.png'" class="photo" alt="" />
+            <span class="text"> {{ numberBoards }}</span>
+          </div>
+        </div>
+      </div>
+      <button>
+        <img [src]="'./assets/icons/add.svg'" class="photo" alt="" />
+        <span class="text">New Board</span>
+      </button>
+    </div>
+  </div>
+  <div class="profile-content container">
+    <span class="subtitle">Boards</span>
+    <div class="content" [class.justify-center]="!boards.length">
+      <app-loader *ngIf="loading"></app-loader>
+      <div class="notification is-red" *ngIf="!loading && error">
+        <span class="text">{{ error }}</span>
+      </div>
+      <div class="notification" *ngIf="!loading && !error && !boards.length">
+        <img [src]="'./assets/icons/gallery.png'" alt="" />
+        <span class="text"
+          >Gather some inspiration by creating your customized boards.</span
+        >
+      </div>
+    </div>
+  </div>
+</div>

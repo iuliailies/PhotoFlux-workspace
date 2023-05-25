@@ -1,7 +1,13 @@
 <main class="main" *ngIf="loggedIn | async; else loggedOut">
   <section class="profile">
-    <app-nav (profileClickedEvent)="isProfileOpen = !isProfileOpen"></app-nav>
-    <app-profile [isOpen]="isProfileOpen"></app-profile>
+    <app-nav
+      (profileClickedEvent)="isPortfolioOpen = !isPortfolioOpen"
+      (boardsClickedEvent)="isBoardsOpen = !isBoardsOpen"
+    ></app-nav>
+    <app-profile
+      [isPortfolioOpen]="isPortfolioOpen"
+      [isBoardsOpen]="isBoardsOpen"
+    ></app-profile>
   </section>
   <section class="content">
     <router-outlet></router-outlet>

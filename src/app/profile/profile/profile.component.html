@@ -1,72 +1,15 @@
 <section
   class="profile"
-  [class.is-open]="isOpen"
+  [class.is-open]="isPortfolioOpen || isBoardsOpen"
   [ngStyle]="{
     width: appliedWidth + 'px',
-    left: (isOpen ? 70 : -appliedWidth) + 'px'
+    left: (isPortfolioOpen || isBoardsOpen ? 70 : -appliedWidth) + 'px'
   }"
   #profile
 >
   <div class="flex-container">
-    <div class="profile-info slimScroll">
-      <div class="info container">
-        <div class="space-between">
-          <div>
-            <div class="name">{{ userName }}</div>
-            <div class="statistics justify-start">
-              <div class="stat">
-                <img
-                  [src]="'./assets/icons/gallery.png'"
-                  class="photo"
-                  alt=""
-                />
-                <span class="text"> {{ numberPhotos }}</span>
-              </div>
-              <div class="stat">
-                <img
-                  [src]="'./assets/icons/star-full.png'"
-                  class="photo"
-                  alt=""
-                />
-                <span class="text">{{ numberStars }}</span>
-              </div>
-            </div>
-          </div>
-          <button (click)="openUploadModal()">
-            <img [src]="'./assets/icons/add.svg'" class="photo" alt="" />
-            <span class="text">Upload photo</span>
-          </button>
-        </div>
-      </div>
-      <div class="photos container">
-        <span class="subtitle">Gallery</span>
-        <div class="content" [class.justify-center]="!photos.length">
-          <app-loader *ngIf="loading"></app-loader>
-          <div class="notification is-red" *ngIf="!loading && error">
-            <span class="text">{{ error }}</span>
-          </div>
-          <div
-            class="notification"
-            *ngIf="!loading && !error && !photos.length"
-          >
-            <img [src]="'./assets/icons/gallery.png'" alt="" />
-            <span class="text"
-              >Inspire others by uploading some of your photos.</span
-            >
-          </div>
-          <div class="gallery" *ngIf="!loading && !error && photos.length">
-            <div class="photo" *ngFor="let photo of photos">
-              <!-- TODO: check why first profile translation is buggy -->
-              <img [src]="photo.url!" class="photo-elem" alt="" />
-              <div class="stat">
-                <img [src]="'./assets/icons/star-empty-white.svg'" alt="" />
-                <span class="text">{{ photo.numberStars }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <app-portfolio [hidden]="!isPortfolioOpen"></app-portfolio>
+    <app-boards [hidden]="!isBoardsOpen"></app-boards>
     <div class="expandable" (mousedown)="resize($event)"></div>
   </div>
 </section>

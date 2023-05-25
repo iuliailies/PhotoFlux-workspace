@@ -14,7 +14,8 @@ export class AppComponent implements OnInit {
   title = 'PhotoFlux';
   prevUrl?: string;
   loggedIn: Observable<boolean>;
-  isProfileOpen = false;
+  isPortfolioOpen = false;
+  isBoardsOpen = false;
 
   constructor(private auth: AuthService, private router: Router) {
     this.loggedIn = this.auth.authenticated
