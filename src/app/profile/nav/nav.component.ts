@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AuthService } from 'src/app/auth/shared/auth.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { AuthService } from 'src/app/auth/shared/auth.service';
 export class NavComponent implements OnInit {
   @Output() profileClickedEvent = new EventEmitter();
   @Output() boardsClickedEvent = new EventEmitter();
-  portfolioOpen = false;
-  boardsOpen = false;
+  @Input() portfolioOpen = false;
+  @Input() boardsOpen = false;
 
   constructor(private authService: AuthService) {}
 

@@ -52,7 +52,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   }
 
   getPhotos(): void {
-    const requests = this.photoService.listPhotos(this.cluster.category);
+    const requests = this.photoService.listPhotos(this.cluster.categoryId);
     this.loading = true;
     forkJoin(requests).subscribe((responses) => {
       responses.forEach((resp) => {

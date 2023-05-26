@@ -1,4 +1,12 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -9,6 +17,8 @@ export class ProfileComponent implements OnInit {
   @ViewChild('profile') profile!: ElementRef;
   @Input() isPortfolioOpen: boolean = false;
   @Input() isBoardsOpen: boolean = false;
+  @Output() portfolioClosedEvent = new EventEmitter();
+  @Output() boardClosedEvent = new EventEmitter();
   defaultWidth = 500;
   width: number = this.defaultWidth;
   appliedWidth: number = this.defaultWidth;
@@ -47,5 +57,10 @@ export class ProfileComponent implements OnInit {
     document.removeEventListener('mouseup', this.functionBindings.up);
     this.profile.nativeElement.classList.remove('is-dragged');
     document.documentElement.style.cursor = 'auto';
+  }
+
+  closeBoards(): void {
+    this.isBoardsOpen = false;
+    this.boardClosedEvent.emit();
   }
 }

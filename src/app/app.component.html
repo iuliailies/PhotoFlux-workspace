@@ -3,10 +3,13 @@
     <app-nav
       (profileClickedEvent)="isPortfolioOpen = !isPortfolioOpen"
       (boardsClickedEvent)="isBoardsOpen = !isBoardsOpen"
+      [portfolioOpen]="isPortfolioOpen"
+      [boardsOpen]="isBoardsOpen"
     ></app-nav>
     <app-profile
       [isPortfolioOpen]="isPortfolioOpen"
       [isBoardsOpen]="isBoardsOpen"
+      (boardClosedEvent)="isBoardsOpen = false"
     ></app-profile>
   </section>
   <section class="content">

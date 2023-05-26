@@ -70,7 +70,8 @@ export class CreateDashboardModalComponent implements OnInit {
     this.clusters = [];
     this.selectedCategories.forEach((category) => {
       this.clusters.push({
-        category: category,
+        categoryId: category,
+        categoryName: this.categories.find((c) => c.id === category)!.name,
         position: {
           x: 0,
           y: 0,

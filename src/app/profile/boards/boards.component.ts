@@ -70,6 +70,7 @@ export class BoardsComponent implements OnInit {
   }
 
   openBoard(id: string) {
+    this.closeMe.emit();
     this.router.navigate([`/dashboard/${id}`]);
   }
 }

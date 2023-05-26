@@ -1,0 +1,38 @@
+@import colours
+@import variables
+
+.list-item
+    min-height: 80px
+    width: 100%
+    border: 1px solid $border-primary
+    border-radius: $border-radius
+    box-shadow: $box-shadow-section
+    box-sizing: border-box
+    margin: 5px
+    padding: 5px 10px
+    position: relative
+
+    .label
+        font-size: 14px
+        font-weight: $weight-medium
+
+    .categories
+        transform: translateX(-5px)
+
+
+    .open-icon
+        position: absolute
+        width: 30px
+        height: 30px
+        right: 10px
+        bottom: 50%
+        transform: translateY(50%)
+        filter: $filter-gray-300
+        opacity: 0
+        transition: opacity .2s
+
+    &:hover
+        cursor: pointer
+
+        .open-icon
+            opacity: 1

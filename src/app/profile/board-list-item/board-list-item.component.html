@@ -1,1 +1,18 @@
-<p>{{ board.name }}</p>
+<div class="list-item">
+  <div class="row">
+    <span class="label">{{ board.name }}</span>
+  </div>
+  <div class="row justify-start">
+    <span class="text" [title]="board.updatedAt"
+      >Last updated {{ updatedAtFromNow }}</span
+    >
+  </div>
+  <div class="row categories">
+    <div class="category" *ngFor="let category of board.categoryNames">
+      {{ category }}
+    </div>
+  </div>
+  <div class="open-icon">
+    <img [src]="'./assets/icons/arrow.svg'" class="arrow" alt="" />
+  </div>
+</div>

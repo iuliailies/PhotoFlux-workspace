@@ -23,7 +23,11 @@ export class Board {
   }
 
   get categoryIds(): string[] {
-    return this.attributes.data.map((elem) => elem.category);
+    return this.attributes.data.map((elem) => elem.categoryId);
+  }
+
+  get categoryNames(): string[] {
+    return this.attributes.data.map((elem) => elem.categoryName);
   }
 
   get createdAt(): Date {
@@ -50,22 +54,10 @@ export interface BoardAttributes {
 }
 
 export interface Cluster {
-  category: string;
+  categoryId: string;
+  categoryName: string;
   position: IPoint;
 }
-
-const attr: BoardAttributes = {
-  name: 'My dummy board',
-  data: [
-    {
-      category: '6ff419e1-3708-4667-b125-269e90895d00',
-      position: {
-        x: 100,
-        y: 100,
-      },
-    },
-  ],
-};
 
 export interface GetBoardResponse {
   data: IBoard;
