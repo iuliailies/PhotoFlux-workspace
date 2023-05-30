@@ -1,4 +1,5 @@
 import {
+  PaginationLinks,
   RelatedResources,
   ResourceID,
   SelfLink,
@@ -44,12 +45,14 @@ export class Photo {
 
 export interface Photos {
   data: Photo[];
+  next?: string;
   numberStars: number;
   numberPhotos: number;
 }
 
 export interface PhotosPerCategory {
   data: Photo[];
+  next?: string;
   categoryName: string;
 }
 
@@ -101,11 +104,11 @@ export interface ListMyPhotoRequest {}
 export interface ListMyPhotoResponse {
   data: PhotoListItemData[];
   meta: MyPhotoListMeta;
-  links: SelfLink;
+  links?: PaginationLinks;
 }
 
 export interface ListPhotosResponse {
   data: PhotoListItemData[];
   meta: PhotoListMeta;
-  links: SelfLink;
+  links: PaginationLinks;
 }

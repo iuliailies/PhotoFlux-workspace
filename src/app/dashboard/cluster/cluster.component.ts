@@ -26,11 +26,12 @@ import { StarService } from 'src/app/shared/services/star.service';
 export class ClusterComponent implements OnInit, AfterViewInit {
   @ViewChild('clusterElement') clusterElement!: ElementRef;
   @Input() cluster!: Cluster;
+  @Input() focused: boolean = false;
   photos: Photo[] = [];
-  displayedPhotos: Photo[] = [];
   categoryName!: string;
-  loading = true;
   error = false;
+  loading = true;
+  next?: string;
 
   constructor(
     private photoService: PhotoService,
@@ -41,7 +42,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.getPhotos();
+    this.listPhotos();
   }
 
   ngAfterViewInit(): void {
@@ -51,42 +52,52 @@ export class ClusterComponent implements OnInit, AfterViewInit {
       this.cluster.position.y + 'px';
   }
 
-  getPhotos(): void {
-    const requests = this.photoService.listPhotos(this.cluster.categoryId);
+  listPhotos(): void {
+    if (this.next == '') {
+      return;
+    }
     this.loading = true;
-    forkJoin(requests).subscribe((responses) => {
-      responses.forEach((resp) => {
-        this.photos = resp.data;
-        this.displayedPhotos = this.photos.slice(0, 3);
+    this.photoService.listPhotos(this.cluster.categoryId, this.next).subscribe(
+      (resp) => {
         this.categoryName = resp.categoryName;
-        this.getPhotoFiles();
-      });
-    });
+        this.next = resp.next;
+        this.getPhotoFiles(resp.data);
+      },
+      (err) => {
+        //TODO: error handling
+      }
+    );
   }
 
-  getPhotoFiles(): void {
-    const request = this.photos.map((photo) =>
+  getPhotoFiles(photos: Photo[]): void {
+    const length = photos.length;
+    // TODO: improve, move minio interaction into the service
+    const request = photos.map((photo) =>
       this.minioService.getPhoto(photo.href)
     );
     forkJoin(request)
       .pipe(
         catchError(() => of(false)),
         finalize(() => {
-          // leave time for photos to load nicely
-          setTimeout(() => {
-            this.loading = false;
-          }, 1500);
+          this.loading = false;
         })
       )
       .subscribe((responses) => {
         if (responses === false) {
           return;
         }
+        this.photos.push(...photos);
         (responses as any[]).forEach((resp, index) => {
-          this.photos[index].file = new File([resp], '');
-          this.photos[index].url = this.sanitizeUrl(
-            URL.createObjectURL(this.photos[index].file!)
+          this.photos[this.photos.length - length + index].file = new File(
+            [resp],
+            ''
           );
+          this.photos[this.photos.length - length + index].url =
+            this.sanitizeUrl(
+              URL.createObjectURL(
+                this.photos[this.photos.length - length + index].file!
+              )
+            );
         });
       });
   }

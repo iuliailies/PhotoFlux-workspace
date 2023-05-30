@@ -11,6 +11,7 @@ import { ApiInterceptorProvider } from './interceptors/api.interceptor';
 import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
 import { RefreshTokenInterceptorProvider } from './interceptors/refresh-token.interceptor';
 import { ToastComponent } from './components/toast/toast.component';
+import { InfiniteScrollComponent } from './components/infinite-scroll/infinite-scroll.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ToastComponent } from './components/toast/toast.component';
     ComboboxComponent,
     LoaderComponent,
     ToastComponent,
+    InfiniteScrollComponent,
   ],
   imports: [CommonModule, ModalModule, HttpClientModule, FormsModule],
   exports: [
@@ -27,6 +29,7 @@ import { ToastComponent } from './components/toast/toast.component';
     LoaderComponent,
     FormsModule,
     ToastComponent,
+    InfiniteScrollComponent,
   ],
   providers: [
     ApiInterceptorProvider,

@@ -15,6 +15,7 @@ import {
   generateNewPhotoFromListItem,
 } from '../helpers/photo.helpers';
 import { MinioService } from './minio.service';
+import { PAGINATION } from '../models/params.model';
 
 @Injectable({
   providedIn: 'root',
@@ -40,29 +41,40 @@ export class PhotoService {
       .pipe(map(() => uploadedPhoto));
   }
 
-  listMyPhotos(): Observable<Photos> {
-    return this.http.get<ListMyPhotoResponse>(this.requestURL + 'me/').pipe(
-      map((resp) => {
-        const photos: Photos = {
-          data: resp.data.map((item) => generateNewPhotoFromListItem(item)),
-          numberPhotos: resp.meta.number_photos,
-          numberStars: resp.meta.number_stars,
-        };
-        return photos;
-      })
-    );
+  listMyPhotos(next?: string): Observable<Photos> {
+    return this.http
+      .get<ListMyPhotoResponse>(
+        next || this.requestURL + 'me/?limit=' + PAGINATION.LIMIT
+      )
+      .pipe(
+        map((resp) => {
+          const photos: Photos = {
+            data: resp.data.map((item) => generateNewPhotoFromListItem(item)),
+            next: resp.links?.next,
+            numberPhotos: resp.meta.number_photos,
+            numberStars: resp.meta.number_stars,
+          };
+          return photos;
+        })
+      );
   }
 
-  listPhotos(categoryId: string): Observable<PhotosPerCategory> {
+  listPhotos(categoryId: string, next?: string): Observable<PhotosPerCategory> {
     const params = { params: new HttpParams().set('category', categoryId) };
-    return this.http.get<ListPhotosResponse>(this.requestURL, params).pipe(
-      map((resp) => {
-        const photos: PhotosPerCategory = {
-          data: resp.data.map((item) => generateNewPhotoFromListItem(item)),
-          categoryName: resp.meta.category_name,
-        };
-        return photos;
-      })
-    );
+    return this.http
+      .get<ListPhotosResponse>(
+        next || this.requestURL + '?limit=' + PAGINATION.LIMIT,
+        params
+      )
+      .pipe(
+        map((resp) => {
+          const photos: PhotosPerCategory = {
+            data: resp.data.map((item) => generateNewPhotoFromListItem(item)),
+            next: resp.links.next,
+            categoryName: resp.meta.category_name,
+          };
+          return photos;
+        })
+      );
   }
 }

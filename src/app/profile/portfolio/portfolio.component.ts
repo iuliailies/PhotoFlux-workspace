@@ -25,6 +25,7 @@ export class PortfolioComponent implements OnInit {
   numberPhotos = 0;
   loading = false;
   error?: string;
+  next?: string;
 
   constructor(
     private modalService: ModalService,
@@ -44,16 +45,19 @@ export class PortfolioComponent implements OnInit {
   }
 
   listPhotos(): void {
+    if (this.next == '') {
+      return;
+    }
     this.loading = true;
     this.photoService
-      .listMyPhotos()
+      .listMyPhotos(this.next)
       .pipe(untilDestroyed(this))
       .subscribe(
         (resp) => {
-          this.photos = resp.data;
           this.numberPhotos = resp.numberPhotos;
           this.numberStars = resp.numberStars;
-          this.getPhotoFiles();
+          this.next = resp.next;
+          this.getPhotoFiles(resp.data);
         },
         (err) => {
           this.error = err;
@@ -61,8 +65,10 @@ export class PortfolioComponent implements OnInit {
       );
   }
 
-  getPhotoFiles(): void {
-    const request = this.photos.map((photo) =>
+  getPhotoFiles(photos: Photo[]): void {
+    const length = photos.length;
+    // TODO: improve, move minio interaction into the service
+    const request = photos.map((photo) =>
       this.minioService.getPhoto(photo.href)
     );
     forkJoin(request)
@@ -77,11 +83,18 @@ export class PortfolioComponent implements OnInit {
           this.error = 'Error while loading gallery.';
           return;
         }
+        this.photos.push(...photos);
         (responses as any[]).forEach((resp, index) => {
-          this.photos[index].file = new File([resp], '');
-          this.photos[index].url = this.sanitizeUrl(
-            URL.createObjectURL(this.photos[index].file!)
+          this.photos[this.photos.length - length + index].file = new File(
+            [resp],
+            ''
           );
+          this.photos[this.photos.length - length + index].url =
+            this.sanitizeUrl(
+              URL.createObjectURL(
+                this.photos[this.photos.length - length + index].file!
+              )
+            );
         });
       });
   }

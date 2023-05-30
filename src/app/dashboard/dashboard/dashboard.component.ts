@@ -28,6 +28,7 @@ export class DashboardComponent implements OnInit {
   photosLoading = false;
   photosError = false;
   zoom: number = 1;
+  focusedCluster = -1;
 
   constructor(
     private modalService: ModalService,
@@ -122,7 +123,7 @@ export class DashboardComponent implements OnInit {
     const zoomEnv = this.zoomEnv;
     const panEnv = this.panEnv;
 
-    clusters.on('dblclick', function () {
+    clusters.on('dblclick', function (eventObj: Event, data: any, i: number) {
       zoomEnv
         .focus(
           this,
@@ -143,11 +144,13 @@ export class DashboardComponent implements OnInit {
         .on('AnimationOpenEnd', function () {
           this.element.classList.remove('focusing');
           this.element.classList.add('focused');
+          self.focusedCluster = i;
         })
         .on('AnimationCloseStart', function () {
           this.element.classList.remove('focused');
           dragEnv.disabled = false;
           panEnv!.disabled = false;
+          self.focusedCluster = -1;
         });
     });
   }

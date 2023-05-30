@@ -7,29 +7,36 @@
     </div>
     <span class="name">{{ categoryName || "..." }}</span>
   </div>
-  <div class="cluster-body">
-    <app-loader *ngIf="loading"></app-loader>
-    <div class="gallery" *ngIf="!loading && !error && photos.length">
-      <div class="photo" *ngFor="let photo of photos.slice(0, 3)">
-        <img [src]="photo.url!" class="photo-elem" alt="" />
-        <div class="stat" (click)="starPhoto(photo)">
-          <img
-            [src]="'./assets/icons/star-empty-white.svg'"
-            *ngIf="!photo.starred"
-            alt=""
-          />
-          <img
-            [src]="'./assets/icons/star-full-white.svg'"
-            *ngIf="photo.starred"
-            alt=""
-          />
-          <span class="text">{{ photo.numberStars }}</span>
+  <div class="cluster-body scroll-hidden" [class.slimScroll]="focused">
+    <app-infinite-scroll (scrolled)="listPhotos()">
+      <div class="gallery" *ngIf="photos.length">
+        <div
+          class="photo"
+          *ngFor="let photo of photos; let i = index"
+          [hidden]="!focused && i > 3"
+        >
+          <img [src]="photo.url!" class="photo-elem" alt="" />
+          <div class="stat" (click)="starPhoto(photo)">
+            <img
+              [src]="'./assets/icons/star-empty-white.svg'"
+              *ngIf="!photo.starred"
+              alt=""
+            />
+            <img
+              [src]="'./assets/icons/star-full-white.svg'"
+              *ngIf="photo.starred"
+              alt=""
+            />
+            <span class="text">{{ photo.numberStars }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    </app-infinite-scroll>
+
     <div class="notification" *ngIf="!loading && !error && !photos.length">
       <span class="text">No photos uploaded under this category</span>
     </div>
+    <app-loader *ngIf="loading"></app-loader>
     <div class="notification is-red" *ngIf="!loading && error">
       <span class="text">An error occured while loading the photos.</span>
     </div>

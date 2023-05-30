@@ -9,8 +9,9 @@
   </div>
   <div class="zoomable" *ngIf="board" #zoomable>
     <app-cluster
-      *ngFor="let cluster of board.clusters"
+      *ngFor="let cluster of board.clusters; let i = index"
       [cluster]="cluster"
+      [focused]="focusedCluster === i"
     ></app-cluster>
   </div>
 </div>
