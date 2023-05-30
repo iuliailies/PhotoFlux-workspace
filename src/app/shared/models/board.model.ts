@@ -38,6 +38,10 @@ export class Board {
     return this.board.updated_at;
   }
 
+  set updatedAt(date: Date) {
+    this.board.updated_at = date;
+  }
+
   get clusters(): Cluster[] {
     return this.attributes.data;
   }

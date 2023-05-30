@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { finalize } from 'rxjs';
 import { ComboboxValue } from 'src/app/shared/components/combobox/combobox.component';
+import { arrangeClusters } from 'src/app/shared/helpers/arrange-clusters';
 import { ActiveModal } from 'src/app/shared/modal/modal-ref.class';
 import { Cluster } from 'src/app/shared/models/board.model';
 import { Category } from 'src/app/shared/models/category.model';
@@ -98,20 +99,6 @@ export class CreateDashboardModalComponent implements OnInit {
   }
 
   arrangeClusters(): void {
-    const availableWidth = document.documentElement.offsetWidth - this.navWidth;
-    const clustersPerRow = Math.floor(
-      availableWidth / (this.clusterWidth + this.clusterMargin)
-    );
-
-    this.clusters.forEach((cluster, index) => {
-      cluster.position.x =
-        Math.floor(index % clustersPerRow) *
-          (this.clusterWidth + this.clusterMargin) +
-        this.clusterMargin;
-      cluster.position.y =
-        Math.floor(index / clustersPerRow) *
-          (this.clusterHeight + this.clusterMargin) +
-        this.clusterMargin;
-    });
+    arrangeClusters(this.clusters);
   }
 }

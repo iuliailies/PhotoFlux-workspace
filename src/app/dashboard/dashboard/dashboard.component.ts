@@ -11,6 +11,8 @@ import {
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { formatDistanceToNow } from 'date-fns';
+import { arrangeClusters } from 'src/app/shared/helpers/arrange-clusters';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +31,9 @@ export class DashboardComponent implements OnInit {
   photosError = false;
   zoom: number = 1;
   focusedCluster = -1;
+  saving = false;
+  recentlySaved = false;
+  clusters?: canvaSketcher.Selection;
 
   constructor(
     private modalService: ModalService,
@@ -110,9 +115,9 @@ export class DashboardComponent implements OnInit {
     if (!this.board || !this.zoomEnv) return;
     let self = this;
 
-    const clusters = canvaSketcher.selectAll('.cluster');
+    this.clusters = canvaSketcher.selectAll('.cluster');
     const dragEnv = new canvaSketcher.DragEnvironment()
-      .apply(clusters, { threshold: 100, disableEvents: true })
+      .apply(this.clusters, { threshold: 100, disableEvents: true })
       .on('end', function (eventObj: Event, data: any, index: number) {
         self.board!.clusters[index]!.position = {
           x: parseInt(this.style.left, 10) || 0,
@@ -123,36 +128,46 @@ export class DashboardComponent implements OnInit {
     const zoomEnv = this.zoomEnv;
     const panEnv = this.panEnv;
 
-    clusters.on('dblclick', function (eventObj: Event, data: any, i: number) {
-      zoomEnv
-        .focus(
-          this,
-          {
-            transitionDuration: 0.4,
-            boundary: 0.05,
-          },
-          this.querySelector('.action-icon') as HTMLElement,
-          {
-            key: 'Escape',
-          }
-        )
-        .on('AnimationOpenStart', function () {
-          this.element.classList.add('focusing');
-          dragEnv.disabled = true;
-          panEnv!.disabled = true;
-        })
-        .on('AnimationOpenEnd', function () {
-          this.element.classList.remove('focusing');
-          this.element.classList.add('focused');
-          self.focusedCluster = i;
-        })
-        .on('AnimationCloseStart', function () {
-          this.element.classList.remove('focused');
-          dragEnv.disabled = false;
-          panEnv!.disabled = false;
-          self.focusedCluster = -1;
-        });
-    });
+    this.clusters.on(
+      'dblclick',
+      function (eventObj: Event, data: any, i: number) {
+        zoomEnv
+          .focus(
+            this,
+            {
+              transitionDuration: 0.4,
+              boundary: 0.04,
+            },
+            this.querySelector('.action-icon') as HTMLElement,
+            {
+              key: 'Escape',
+            }
+          )
+          .on('AnimationOpenStart', function () {
+            this.element.classList.add('focusing');
+            dragEnv.disabled = true;
+            panEnv!.disabled = true;
+          })
+          .on('AnimationOpenEnd', function () {
+            this.element.classList.remove('focusing');
+            this.element.classList.add('focused');
+            self.focusedCluster = i;
+          })
+          .on('AnimationCloseStart', function () {
+            this.element.classList.remove('focused');
+            dragEnv.disabled = false;
+            panEnv!.disabled = false;
+            self.focusedCluster = -1;
+          });
+      }
+    );
+  }
+
+  get updatedAtFromNow(): string {
+    if (!this.board) {
+      return '-';
+    }
+    return formatDistanceToNow(new Date(this.board.updatedAt)) + ' ago';
   }
 
   openCreateModal(): void {
@@ -167,15 +182,40 @@ export class DashboardComponent implements OnInit {
   }
 
   updateBoard(): void {
+    this.saving = true;
     this.boardService
       .updateBoard(this.board!.board.id, this.board!.name, this.board!.clusters)
       .subscribe(
-        (resp) => {},
+        (resp) => {
+          this.saving = false;
+          this.recentlySaved = true;
+          setTimeout(() => {
+            this.recentlySaved = false;
+          }, 5000);
+          this.board!.updatedAt = new Date();
+        },
         (error) => {
           this.toastService.showToast(TOAST_STATE.danger, [
             { toastMessage: `<div>Error updating board layout.</div>` },
           ]);
         }
       );
+  }
+
+  arrangeClusters(): void {
+    if (!this.board) {
+      return;
+    }
+    arrangeClusters(this.board.clusters);
+    this.clusters?.style('left', (data: any, i: number) => {
+      return this.board?.clusters[i].position.x + 'px';
+    });
+    this.clusters?.style('top', (data: any, i: number) => {
+      return this.board?.clusters[i].position.y + 'px';
+    });
+
+    this.zoomEnv?.reset();
+
+    this.updateBoard();
   }
 }

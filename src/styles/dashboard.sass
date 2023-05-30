@@ -6,6 +6,48 @@
     background-image: -webkit-linear-gradient(rgba(222, 175, 116, 0.09) 1px,transparent 1px),-webkit-linear-gradient(0deg,rgba(209, 168, 100, 0.09) 1px,transparent 1px),-webkit-linear-gradient(rgba(222, 174, 98, 0.06) 1px,transparent 1px),-webkit-linear-gradient(0deg,rgba(200,200,200,.06) 1px,transparent 1px),-webkit-linear-gradient(rgba(200,200,200,.04) 1px,transparent 1px),-webkit-linear-gradient(0deg,rgba(200,200,200,.04) 1px,transparent 1px)
     background-size: 4em 4em,4em 4em,1em 1em,1em 1em,.5em .5em,.5em .5em
 
+    .top
+        z-index: 800
+        position: fixed
+
+        &.below
+            z-index: 10
+            opacity: 0
+            pointer-events: none
+
+    .header
+        height: 73px
+        width: fit-content
+        padding: 20px
+        box-sizing: border-box
+        border-bottom: 1px solid $border-primary
+        display: flex
+        flex-direction: column
+        justify-content: center
+
+        .title
+            font-size: 18px
+            font-weight: $weight-medium
+
+        .text
+            color: $text-secondary
+
+    .subheader
+        padding: 14px 20px
+
+        .action-icons
+            margin-top: 5px
+
+            .action-icon
+                cursor: pointer
+                transition: all .2s
+
+                img
+                    height: 18px
+
+                &:hover
+                    opacity: .7
+
     .create-button
         position: absolute
         left: 50%

@@ -1,4 +1,21 @@
 <div class="zoomable-container" #zoomableContainer>
+  <div class="top" [class.below]="focusedCluster !== -1">
+    <div class="header" *ngIf="board">
+      <span class="title">{{ board.name }}</span>
+      <span class="text" *ngIf="saving">Saving...</span>
+      <span class="text" *ngIf="!saving && recentlySaved">Saved</span>
+      <span class="text" *ngIf="!saving && !recentlySaved"
+        >Last update was {{ updatedAtFromNow }}</span
+      >
+    </div>
+    <div class="subheader">
+      <div class="action-icons">
+        <div class="action-icon" (click)="arrangeClusters()">
+          <img [src]="'./assets/icons/arrange.png'" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
   <div
     class="create-button is-large"
     *ngIf="!board"

@@ -62,7 +62,10 @@ export class PhotoService {
   listPhotos(categoryId: string, next?: string): Observable<PhotosPerCategory> {
     const params = { params: new HttpParams().set('category', categoryId) };
     return this.http
-      .get<ListPhotosResponse>(next || this.requestURL + '?limit=' + 12, params)
+      .get<ListPhotosResponse>(
+        next || this.requestURL + '?limit=' + PAGINATION.LIMIT,
+        params
+      )
       .pipe(
         map((resp) => {
           const photos: PhotosPerCategory = {
