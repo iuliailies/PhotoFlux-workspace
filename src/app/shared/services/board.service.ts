@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map } from 'rxjs';
 import {
   Board,
   BoardAttributes,
@@ -16,6 +16,7 @@ import {
 })
 export class BoardService {
   private requestURL = 'boards/';
+  public boardCreated$: Subject<Board> = new Subject<Board>();
 
   constructor(private http: HttpClient) {}
 

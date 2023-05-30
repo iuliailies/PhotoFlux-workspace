@@ -53,6 +53,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   }
 
   listPhotos(): void {
+    console.log("inside list")
     if (this.next == '') {
       return;
     }

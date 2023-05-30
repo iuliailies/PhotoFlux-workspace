@@ -7,13 +7,13 @@
     </div>
     <span class="name">{{ categoryName || "..." }}</span>
   </div>
-  <div class="cluster-body scroll-hidden" [class.slimScroll]="focused">
+  <div class="cluster-body" [class.slimScroll]="focused">
     <app-infinite-scroll (scrolled)="listPhotos()">
       <div class="gallery" *ngIf="photos.length">
         <div
           class="photo"
           *ngFor="let photo of photos; let i = index"
-          [hidden]="!focused && i > 3"
+          [hidden]="!focused && i > 2"
         >
           <img [src]="photo.url!" class="photo-elem" alt="" />
           <div class="stat" (click)="starPhoto(photo)">

@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit {
   }
 
   initializeZoomEnvironment(): void {
-    if (!this.board) return;
+    if (!this.board || this.zoomEnv) return;
 
     this.zoomEnv = canvaSketcher
       .zoom(
@@ -160,12 +160,7 @@ export class DashboardComponent implements OnInit {
 
     modalRef.result.then(
       (resp) => {
-        this.board = resp;
-        // make call assynchronous, such that the clusters can be rendered first
-        setTimeout(() => {
-          this.initializeZoomEnvironment();
-          this.sketch();
-        });
+        this.router.navigate([`/dashboard/${resp.id}`]);
       },
       () => {}
     );

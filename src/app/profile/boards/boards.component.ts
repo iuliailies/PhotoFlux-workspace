@@ -27,6 +27,9 @@ export class BoardsComponent implements OnInit {
     private router: Router,
     private modalService: ModalService
   ) {
+    this.boardsService.boardCreated$.subscribe((board) => {
+      this.boards.push(board);
+    });
     this.listBoards();
   }
 

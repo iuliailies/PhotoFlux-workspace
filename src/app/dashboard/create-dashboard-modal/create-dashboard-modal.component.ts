@@ -88,6 +88,7 @@ export class CreateDashboardModalComponent implements OnInit {
       )
       .subscribe(
         (resp) => {
+          this.boardService.boardCreated$.next(resp);
           this.activeModal.close(resp);
         },
         (err) => {
