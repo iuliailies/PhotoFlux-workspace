@@ -25,7 +25,11 @@
     <div class="content" [class.justify-center]="!photos.length">
       <app-infinite-scroll (scrolled)="listPhotos()">
         <div class="gallery" *ngIf="photos.length">
-          <div class="photo" *ngFor="let photo of photos">
+          <div
+            class="photo"
+            *ngFor="let photo of photos"
+            (click)="openPhotoModal(photo)"
+          >
             <!-- TODO: check why first profile translation is buggy -->
             <img [src]="photo.url!" class="photo-elem" alt="" />
             <div class="stat">

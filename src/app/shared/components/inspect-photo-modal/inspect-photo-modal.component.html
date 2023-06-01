@@ -1,0 +1,23 @@
+<div class="modal-header">
+  <div class="header-title">
+    <h1>Inspect photo</h1>
+  </div>
+  <span class="icon close-icon is-action" (click)="activeModal.dismiss(false)">
+    <img src="./assets/icons/x.svg" alt="" />
+  </span>
+</div>
+<div class="modal-body">
+  <img [src]="photo.url!" class="photo-elem" alt="" />
+</div>
+<div class="modal-footer space-between">
+  <div class="align-center"></div>
+  <div class="align-center">
+    <button
+      type="button"
+      class="button is-light"
+      (click)="activeModal.dismiss(false)"
+    >
+      <span>Done</span>
+    </button>
+  </div>
+</div>

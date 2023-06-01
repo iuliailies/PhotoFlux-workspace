@@ -5,7 +5,7 @@
         <div class="name">{{ userName }}</div>
         <div class="statistics justify-start">
           <div class="stat">
-            <img [src]="'./assets/icons/gallery.png'" class="photo" alt="" />
+            <img [src]="'./assets/icons/board-idea.png'" class="photo" alt="" />
             <span class="text"> {{ numberBoards }}</span>
           </div>
         </div>
@@ -24,7 +24,7 @@
         <span class="text">{{ error }}</span>
       </div>
       <div class="notification" *ngIf="!loading && !error && !boards.length">
-        <img [src]="'./assets/icons/gallery.png'" alt="" />
+        <img [src]="'./assets/icons/board-idea.png'" alt="" />
         <span class="text"
           >Gather some inspiration by creating your customized boards.</span
         >

@@ -8,7 +8,7 @@ $padding-unfocused: 10px
     border: 1px solid $border-primary
     border-radius: $border-radius
     background-color: $background-modal
-    cursor: pointer
+    cursor: grab
     box-shadow: $box-shadow-light
 
     .cluster-header
@@ -26,6 +26,10 @@ $padding-unfocused: 10px
             height: 100%
             display: flex
             align-items: center
+
+            .action-icon
+                display: flex
+                justify-content: center
 
         .name
             transition: all $transition-duration
@@ -58,20 +62,15 @@ $padding-unfocused: 10px
 
             .action-icon
                 cursor: pointer
-
-                i
-                    font-size: 80%
-                    color: $text-primary
-                    transition: color .2s
-
-                &:hover
-                    i
-                        color: $text-secondary
+                transition: all .2s
 
                 img
-                    transform: rotate(180deg)
-                    width: 15px
-                    height: 15px
+                    width: 12px
+                    height: 12px
+
+                &:hover
+                    opacity: .7
+
 
     .cluster-body
         width: 100%
@@ -87,7 +86,6 @@ $padding-unfocused: 10px
                 position: relative
                 min-height: 70px
                 max-height: 90px
-                cursor: auto
 
                 .stat
                     position: absolute

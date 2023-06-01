@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
   panEnv?: canvaSketcher.PanEnvironment;
   photosLoading = false;
   photosError = false;
-  zoom: number = 1;
+  zoom: number = 100;
   focusedCluster = -1;
   saving = false;
   recentlySaved = false;
@@ -98,17 +98,10 @@ export class DashboardComponent implements OnInit {
       })
       .on('zoom', (ev: Event, zoom: number) => {
         ev.preventDefault();
-        this.zoom = zoom;
+        this.zoom = Math.round(zoom * 100);
       });
 
-    this.panEnv = this.zoomEnv
-      .pannable()
-      .on('start', () => {
-        this.zoomableContainer.nativeElement.classList.add('panning');
-      })
-      .on('end', () => {
-        this.zoomableContainer.nativeElement.classList.remove('panning');
-      });
+    this.panEnv = this.zoomEnv.pannable();
   }
 
   sketch(): void {
@@ -117,7 +110,7 @@ export class DashboardComponent implements OnInit {
 
     this.clusters = canvaSketcher.selectAll('.cluster');
     const dragEnv = new canvaSketcher.DragEnvironment()
-      .apply(this.clusters, { threshold: 100, disableEvents: true })
+      .apply(this.clusters, { threshold: 10, disableEvents: true })
       .on('end', function (eventObj: Event, data: any, index: number) {
         self.board!.clusters[index]!.position = {
           x: parseInt(this.style.left, 10) || 0,
@@ -140,7 +133,8 @@ export class DashboardComponent implements OnInit {
             },
             this.querySelector('.action-icon') as HTMLElement,
             {
-              key: 'Escape',
+              key: 'Q',
+              ctrl: true,
             }
           )
           .on('AnimationOpenStart', function () {
@@ -215,6 +209,7 @@ export class DashboardComponent implements OnInit {
     });
 
     this.zoomEnv?.reset();
+    this.zoom = 100;
 
     this.updateBoard();
   }

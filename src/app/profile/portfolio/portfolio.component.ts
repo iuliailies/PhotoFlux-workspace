@@ -12,6 +12,7 @@ import { Photo } from 'src/app/shared/models/photo.model';
 import { MinioService } from 'src/app/shared/services/minio.service';
 import { PhotoService } from 'src/app/shared/services/photo.service';
 import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
+import { InspectPhotoModalComponent } from 'src/app/shared/components/inspect-photo-modal/inspect-photo-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -112,6 +113,11 @@ export class PortfolioComponent implements OnInit {
       },
       () => {}
     );
+  }
+
+  openPhotoModal(photo: Photo): void {
+    const modalRef = this.modalService.open(InspectPhotoModalComponent);
+    modalRef.componentInstance.photo = photo;
   }
 
   sanitizeUrl(url: string): string {

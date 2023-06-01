@@ -19,7 +19,7 @@
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
     "@auth0/angular-jwt": "^5.1.2",
-    "@iuliailies/canva-sketcher": "C:/Users/Iulia/iuliailies-canva-sketcher-1.1.4.tgz",
+    "@iuliailies/canva-sketcher": "^1.1.2",
     "date-fns": "^2.30.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

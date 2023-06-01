@@ -12,6 +12,7 @@ import { ErrorInterceptorProvider } from './interceptors/error.interceptor';
 import { RefreshTokenInterceptorProvider } from './interceptors/refresh-token.interceptor';
 import { ToastComponent } from './components/toast/toast.component';
 import { InfiniteScrollComponent } from './components/infinite-scroll/infinite-scroll.component';
+import { InspectPhotoModalComponent } from './components/inspect-photo-modal/inspect-photo-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { InfiniteScrollComponent } from './components/infinite-scroll/infinite-s
     LoaderComponent,
     ToastComponent,
     InfiniteScrollComponent,
+    InspectPhotoModalComponent,
   ],
   imports: [CommonModule, ModalModule, HttpClientModule, FormsModule],
   exports: [

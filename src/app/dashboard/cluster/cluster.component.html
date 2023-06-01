@@ -1,21 +1,34 @@
-<div class="cluster" #clusterElement>
-  <div class="cluster-header justify-center">
+<div
+  class="cluster"
+  #clusterElement
+  [title]="focused ? '' : 'double click for more photos'"
+>
+  <div class="cluster-header justify-center align-center">
     <div class="action-icons">
-      <div class="action-icon">
-        <i class="fa-solid fa-arrow-left"></i>
+      <div class="action-icon" [title]="'Ctrl + Q'">
+        <img [src]="'./assets/icons/back.png'" alt="" />
       </div>
     </div>
     <span class="name">{{ categoryName || "..." }}</span>
   </div>
   <div class="cluster-body" [class.slimScroll]="focused">
     <app-infinite-scroll (scrolled)="listPhotos()">
-      <div class="gallery" *ngIf="photos.length">
+      <div
+        class="gallery"
+        [class.hidden-content]="!focused && photos.length > 3"
+        *ngIf="photos.length"
+      >
         <div
           class="photo"
           *ngFor="let photo of photos; let i = index"
           [hidden]="!focused && i > 2"
         >
-          <img [src]="photo.url!" class="photo-elem" alt="" />
+          <img
+            [src]="photo.url!"
+            class="photo-elem"
+            alt=""
+            (click)="openPhotoModal(photo)"
+          />
           <div class="stat" (click)="starPhoto(photo)">
             <img
               [src]="'./assets/icons/star-empty-white.svg'"

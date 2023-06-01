@@ -8,10 +8,12 @@ import {
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { catchError, finalize, forkJoin, of } from 'rxjs';
+import { InspectPhotoModalComponent } from 'src/app/shared/components/inspect-photo-modal/inspect-photo-modal.component';
 import {
   TOAST_STATE,
   ToastService,
 } from 'src/app/shared/components/toast/toast.service';
+import { ModalService } from 'src/app/shared/modal/modal.service';
 import { Cluster } from 'src/app/shared/models/board.model';
 import { Photo } from 'src/app/shared/models/photo.model';
 import { MinioService } from 'src/app/shared/services/minio.service';
@@ -38,7 +40,8 @@ export class ClusterComponent implements OnInit, AfterViewInit {
     private starService: StarService,
     private minioService: MinioService,
     private sanitizer: DomSanitizer,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +56,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   }
 
   listPhotos(): void {
-    console.log("inside list")
+    console.log('inside list');
     if (this.next == '') {
       return;
     }
@@ -101,6 +104,11 @@ export class ClusterComponent implements OnInit, AfterViewInit {
             );
         });
       });
+  }
+
+  openPhotoModal(photo: Photo): void {
+    const modalRef = this.modalService.open(InspectPhotoModalComponent);
+    modalRef.componentInstance.photo = photo;
   }
 
   starPhoto(photo: Photo): void {

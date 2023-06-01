@@ -1,6 +1,6 @@
 <div class="zoomable-container" #zoomableContainer>
-  <div class="top" [class.below]="focusedCluster !== -1">
-    <div class="header" *ngIf="board">
+  <div class="top" [class.below]="focusedCluster !== -1" *ngIf="board">
+    <div class="header">
       <span class="title">{{ board.name }}</span>
       <span class="text" *ngIf="saving">Saving...</span>
       <span class="text" *ngIf="!saving && recentlySaved">Saved</span>
@@ -8,11 +8,18 @@
         >Last update was {{ updatedAtFromNow }}</span
       >
     </div>
-    <div class="subheader">
+    <div class="subheader justify-start">
       <div class="action-icons">
-        <div class="action-icon" (click)="arrangeClusters()">
+        <div
+          class="action-icon"
+          (click)="arrangeClusters()"
+          [title]="'reset positions'"
+        >
           <img [src]="'./assets/icons/arrange.png'" alt="" />
         </div>
+      </div>
+      <div class="zoom-label">
+        <span class="text">{{ zoom }}%</span>
       </div>
     </div>
   </div>
