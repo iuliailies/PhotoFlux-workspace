@@ -56,6 +56,9 @@ export class ToastComponent implements OnInit {
   constructor(public toast: ToastService) {
     this.toast.showsToast$.subscribe((value) => {
       this.toastObjects.unshift(value);
+      setTimeout(() => {
+        this.dismissByObject(value);
+      }, this.toast.calculateDismissTimeout(value.toastContent));
     });
   }
 
