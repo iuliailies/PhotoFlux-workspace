@@ -110,6 +110,7 @@ export class PortfolioComponent implements OnInit {
         this.toastService.showToast(TOAST_STATE.success, [
           { toastMessage: `<div>Photo successfully uploaded.</div>` },
         ]);
+        this.numberPhotos += 1;
       },
       () => {}
     );

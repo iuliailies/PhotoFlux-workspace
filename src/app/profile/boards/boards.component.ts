@@ -65,6 +65,7 @@ export class BoardsComponent implements OnInit {
 
     modalRef.result.then(
       (resp) => {
+        this.numberBoards += 1;
         this.openBoard(resp.id);
         this.closeMe.emit();
       },
