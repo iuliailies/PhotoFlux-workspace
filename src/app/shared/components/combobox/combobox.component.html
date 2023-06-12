@@ -6,10 +6,12 @@
         *ngFor="let val of selectedItems; let i = index"
       >
         <span>{{ val.placeholder }}</span>
-        <i
-          class="fas fa-times remove-icon"
+        <img
+          src="./assets/icons/x.svg"
+          alt=""
+          class="remove-icon"
           (click)="removeItemEvent($event, val.value)"
-        ></i>
+        />
       </div>
     </div>
   </div>

@@ -52,10 +52,15 @@ $selectbox-row-height: calc($selectbox-height + 2 * $selectbox-value-margin)
             white-space: nowrap
 
           .remove-icon
-            margin-left: 5px
-            margin-top: 2px
-            color: $white
+            height: 7px
+            margin-left: 7px
+            margin-top: 2.5px
+            filter: $filter-white
             cursor: pointer
+            transition: opacity .1s
+
+            &:hover
+              opacity: .9
 
     .search-container
         height: $selectbox-row-height
