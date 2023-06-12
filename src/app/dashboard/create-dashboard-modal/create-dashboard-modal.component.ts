@@ -82,10 +82,17 @@ export class CreateDashboardModalComponent implements OnInit {
 
     this.arrangeClusters();
 
+    this.saving = true;
+
     this.boardService
       .createBoard(
         this.nameInput.nativeElement.value || this.namePlaceholder,
         this.clusters
+      )
+      .pipe(
+        finalize(() => {
+          this.saving = false;
+        })
       )
       .subscribe(
         (resp) => {
