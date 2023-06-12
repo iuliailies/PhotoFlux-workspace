@@ -98,6 +98,13 @@ $padding-unfocused: 10px
                     border-bottom-right-radius: $border-radius
                     display: none
 
+    &:not(.focused)
+        .cluster-body
+            .gallery
+                .photo
+                    cursor: grab
+
+
     &.focused
         .cluster-body
             .gallery

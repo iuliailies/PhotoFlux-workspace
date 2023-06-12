@@ -121,40 +121,38 @@ export class DashboardComponent implements OnInit {
     const zoomEnv = this.zoomEnv;
     const panEnv = this.panEnv;
 
-    this.clusters.on(
-      'dblclick',
-      function (eventObj: Event, data: any, i: number) {
-        zoomEnv
-          .focus(
-            this,
-            {
-              transitionDuration: 0.4,
-              boundary: 0.04,
-            },
-            this.querySelector('.action-icon') as HTMLElement,
-            {
-              key: 'Q',
-              ctrl: true,
-            }
-          )
-          .on('AnimationOpenStart', function () {
-            this.element.classList.add('focusing');
-            dragEnv.disabled = true;
-            panEnv!.disabled = true;
-          })
-          .on('AnimationOpenEnd', function () {
-            this.element.classList.remove('focusing');
-            this.element.classList.add('focused');
-            self.focusedCluster = i;
-          })
-          .on('AnimationCloseStart', function () {
-            this.element.classList.remove('focused');
-            dragEnv.disabled = false;
-            panEnv!.disabled = false;
-            self.focusedCluster = -1;
-          });
-      }
-    );
+    this.clusters.on('click', function (eventObj: Event, data: any, i: number) {
+      if (self.focusedCluster === i) return;
+      zoomEnv
+        .focus(
+          this,
+          {
+            transitionDuration: 0.4,
+            boundary: 0.04,
+          },
+          this.querySelector('.action-icon') as HTMLElement,
+          {
+            key: 'Q',
+            ctrl: true,
+          }
+        )
+        .on('AnimationOpenStart', function () {
+          this.element.classList.add('focusing');
+          dragEnv.disabled = true;
+          panEnv!.disabled = true;
+        })
+        .on('AnimationOpenEnd', function () {
+          this.element.classList.remove('focusing');
+          this.element.classList.add('focused');
+          self.focusedCluster = i;
+        })
+        .on('AnimationCloseStart', function () {
+          this.element.classList.remove('focused');
+          dragEnv.disabled = false;
+          panEnv!.disabled = false;
+          self.focusedCluster = -1;
+        });
+    });
   }
 
   get updatedAtFromNow(): string {
