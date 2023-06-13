@@ -30,5 +30,5 @@ export class ModalConfig implements Required<ModalOptions> {
   injector!: Injector;
   keyboard = true;
   scrollable!: boolean;
-  size: 'small' | 'large' | 'medium' = 'small';
+  size: 'small' | 'large' | 'medium' | 'fullscreen' = 'small';
 }

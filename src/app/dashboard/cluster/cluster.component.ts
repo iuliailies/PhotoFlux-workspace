@@ -110,7 +110,9 @@ export class ClusterComponent implements OnInit, AfterViewInit {
     if (!this.focused) {
       return;
     }
-    const modalRef = this.modalService.open(InspectPhotoModalComponent);
+    const modalRef = this.modalService.open(InspectPhotoModalComponent, {
+      size: 'fullscreen',
+    });
     modalRef.componentInstance.photo = photo;
   }
 

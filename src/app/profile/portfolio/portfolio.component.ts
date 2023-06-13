@@ -117,7 +117,10 @@ export class PortfolioComponent implements OnInit {
   }
 
   openPhotoModal(photo: Photo): void {
-    const modalRef = this.modalService.open(InspectPhotoModalComponent);
+    const modalRef = this.modalService.open(InspectPhotoModalComponent, {
+      size: 'fullscreen',
+      backdropOpacity: 0.2,
+    });
     modalRef.componentInstance.photo = photo;
   }
 

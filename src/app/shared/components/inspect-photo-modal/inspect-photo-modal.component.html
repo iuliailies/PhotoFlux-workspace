@@ -1,23 +1,25 @@
-<div class="modal-header">
-  <div class="header-title">
-    <h1>Inspect photo</h1>
-  </div>
-  <span class="icon close-icon is-action" (click)="activeModal.dismiss(false)">
-    <img src="./assets/icons/x.svg" alt="" />
-  </span>
-</div>
 <div class="modal-body">
   <img [src]="photo.url!" class="photo-elem" alt="" />
-</div>
-<div class="modal-footer space-between">
-  <div class="align-center"></div>
-  <div class="align-center">
-    <button
-      type="button"
-      class="button is-light"
-      (click)="activeModal.dismiss(false)"
-    >
-      <span>Done</span>
-    </button>
+  <div class="action-icons exit">
+    <div class="action-icon" [title]="'Esc'" (click)="activeModal.dismiss()">
+      <img [src]="'./assets/icons/x.svg'" alt="" />
+    </div>
+  </div>
+  <div class="action-icons tools">
+    <div class="action-icon" [title]="'Download'" (click)="downloadPhoto()">
+      <img [src]="'./assets/icons/download.png'" alt="" />
+    </div>
+    <div class="action-icon" [title]="'Star'" (click)="starPhoto()">
+      <img
+        [src]="'./assets/icons/star-full-white.svg'"
+        *ngIf="photo.starred"
+        alt=""
+      />
+      <img
+        [src]="'./assets/icons/star-empty-white.svg'"
+        *ngIf="!photo.starred"
+        alt=""
+      />
+    </div>
   </div>
 </div>

@@ -25,7 +25,7 @@ export class ModalComponent implements OnInit, AfterViewInit {
   @Input() backdrop: boolean | 'white' = true;
   @Input() backdropOpacity = 0.5;
   @Input() keyboard = true;
-  @Input() size: 'small' | 'large' | 'medium' = 'medium';
+  @Input() size: 'small' | 'large' | 'medium' | 'fullscreen' = 'medium';
 
   @Output() dismissEvent = new EventEmitter();
 
