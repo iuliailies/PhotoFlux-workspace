@@ -13,6 +13,8 @@
       novalidate
       class="form"
     >
+      <!-- dummy input, to avoid autocomplete on Firefox -->
+      <input type="password" hidden />
       <div class="field">
         <label class="label">Email</label>
         <div
@@ -25,6 +27,7 @@
             class="input"
             type="text"
             formControlName="email"
+            autocomplete="off"
             (focus)="emailFocused = true"
             (blur)="emailFocused = false"
           />
@@ -42,6 +45,7 @@
             class="input"
             type="text"
             formControlName="name"
+            autocomplete="off"
             (focus)="nameFocused = true"
             (blur)="nameFocused = false"
           />
