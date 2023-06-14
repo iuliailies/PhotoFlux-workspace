@@ -6,6 +6,8 @@ export interface IPoint {
   y: number;
 }
 
+export type PhotoSortType = 'star' | 'created_at';
+
 export class Board {
   photos: Photo[][] = [];
   attributes: BoardAttributes;
@@ -44,6 +46,10 @@ export class Board {
 
   get clusters(): Cluster[] {
     return this.attributes.data;
+  }
+
+  set clusters(clusters: Cluster[]) {
+    this.attributes.data = clusters;
   }
 }
 

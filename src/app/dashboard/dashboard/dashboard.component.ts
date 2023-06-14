@@ -1,7 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ModalService } from 'src/app/shared/modal/modal.service';
 import { CreateDashboardModalComponent } from '../create-dashboard-modal/create-dashboard-modal.component';
-import { Board } from 'src/app/shared/models/board.model';
+import {
+  Board,
+  Cluster,
+  PhotoSortType,
+} from 'src/app/shared/models/board.model';
 import * as canvaSketcher from '@iuliailies/canva-sketcher';
 import { BoardService } from 'src/app/shared/services/board.service';
 import {
@@ -9,7 +13,7 @@ import {
   ToastService,
 } from 'src/app/shared/components/toast/toast.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Subject, filter } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { formatDistanceToNow } from 'date-fns';
 import { arrangeClusters } from 'src/app/shared/helpers/arrange-clusters';
@@ -34,6 +38,13 @@ export class DashboardComponent implements OnInit {
   saving = false;
   recentlySaved = false;
   clusters?: canvaSketcher.Selection;
+  sortType: PhotoSortType = 'created_at';
+  sortTypeChangedSubject: Subject<PhotoSortType> = new Subject<PhotoSortType>();
+
+  sortCriteria: { value: string; placeholder: string }[] = [
+    { value: 'star', placeholder: 'Most starred' },
+    { value: 'created_at', placeholder: 'Latest' },
+  ];
 
   constructor(
     private modalService: ModalService,
@@ -210,5 +221,9 @@ export class DashboardComponent implements OnInit {
     this.zoom = 100;
 
     this.updateBoard();
+  }
+
+  sortClusters(): void {
+    this.sortTypeChangedSubject.next(this.sortType);
   }
 }

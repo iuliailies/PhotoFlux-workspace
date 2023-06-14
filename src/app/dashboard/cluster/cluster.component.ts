@@ -7,14 +7,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { catchError, finalize, forkJoin, of } from 'rxjs';
+import { Subject, catchError, finalize, forkJoin, of } from 'rxjs';
 import { InspectPhotoModalComponent } from 'src/app/shared/components/inspect-photo-modal/inspect-photo-modal.component';
 import {
   TOAST_STATE,
   ToastService,
 } from 'src/app/shared/components/toast/toast.service';
 import { ModalService } from 'src/app/shared/modal/modal.service';
-import { Cluster } from 'src/app/shared/models/board.model';
+import { Cluster, PhotoSortType } from 'src/app/shared/models/board.model';
 import { Photo } from 'src/app/shared/models/photo.model';
 import { MinioService } from 'src/app/shared/services/minio.service';
 import { PhotoService } from 'src/app/shared/services/photo.service';
@@ -29,6 +29,9 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   @ViewChild('clusterElement') clusterElement!: ElementRef;
   @Input() cluster!: Cluster;
   @Input() focused: boolean = false;
+  @Input() sortTypeChangedSubject: Subject<PhotoSortType> =
+    new Subject<PhotoSortType>();
+  sortType: PhotoSortType = 'created_at';
   photos: Photo[] = [];
   categoryName!: string;
   error = false;
@@ -46,6 +49,11 @@ export class ClusterComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.listPhotos();
+    this.sortTypeChangedSubject.subscribe((type) => {
+      this.resetValues();
+      this.sortType = type;
+      this.listPhotos();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -55,22 +63,29 @@ export class ClusterComponent implements OnInit, AfterViewInit {
       this.cluster.position.y + 'px';
   }
 
+  resetValues(): void {
+    this.next = undefined;
+    this.photos = [];
+    this.error = false;
+  }
+
   listPhotos(): void {
-    console.log('inside list');
     if (this.next == '') {
       return;
     }
     this.loading = true;
-    this.photoService.listPhotos(this.cluster.categoryId, this.next).subscribe(
-      (resp) => {
-        this.categoryName = resp.categoryName;
-        this.next = resp.next;
-        this.getPhotoFiles(resp.data);
-      },
-      (err) => {
-        //TODO: error handling
-      }
-    );
+    this.photoService
+      .listPhotos(this.cluster.categoryId, this.sortType, this.next)
+      .subscribe(
+        (resp) => {
+          this.categoryName = resp.categoryName;
+          this.next = resp.next;
+          this.getPhotoFiles(resp.data);
+        },
+        (err) => {
+          //TODO: error handling
+        }
+      );
   }
 
   getPhotoFiles(photos: Photo[]): void {

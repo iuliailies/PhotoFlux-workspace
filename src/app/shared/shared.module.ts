@@ -13,6 +13,7 @@ import { RefreshTokenInterceptorProvider } from './interceptors/refresh-token.in
 import { ToastComponent } from './components/toast/toast.component';
 import { InfiniteScrollComponent } from './components/infinite-scroll/infinite-scroll.component';
 import { InspectPhotoModalComponent } from './components/inspect-photo-modal/inspect-photo-modal.component';
+import { SelectboxComponent } from './components/selectbox/selectbox.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { InspectPhotoModalComponent } from './components/inspect-photo-modal/ins
     ToastComponent,
     InfiniteScrollComponent,
     InspectPhotoModalComponent,
+    SelectboxComponent,
   ],
   imports: [CommonModule, ModalModule, HttpClientModule, FormsModule],
   exports: [
@@ -32,6 +34,7 @@ import { InspectPhotoModalComponent } from './components/inspect-photo-modal/ins
     FormsModule,
     ToastComponent,
     InfiniteScrollComponent,
+    SelectboxComponent,
   ],
   providers: [
     ApiInterceptorProvider,

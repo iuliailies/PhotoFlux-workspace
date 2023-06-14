@@ -8,7 +8,10 @@
         >Last update was {{ updatedAtFromNow }}</span
       >
     </div>
-    <div class="subheader justify-start">
+    <div class="subheader justify-start align-center">
+      <div class="zoom-label">
+        <span class="text">{{ zoom }}%</span>
+      </div>
       <div class="action-icons">
         <div
           class="action-icon"
@@ -18,9 +21,11 @@
           <img [src]="'./assets/icons/arrange.png'" alt="" />
         </div>
       </div>
-      <div class="zoom-label">
-        <span class="text">{{ zoom }}%</span>
-      </div>
+      <app-selectbox
+        [values]="sortCriteria"
+        [(ngModel)]="sortType"
+        (ngModelChange)="sortClusters()"
+      ></app-selectbox>
     </div>
   </div>
   <div
@@ -36,6 +41,7 @@
       *ngFor="let cluster of board.clusters; let i = index"
       [cluster]="cluster"
       [focused]="focusedCluster === i"
+      [sortTypeChangedSubject]="sortTypeChangedSubject"
     ></app-cluster>
   </div>
 </div>
