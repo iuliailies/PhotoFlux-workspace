@@ -37,11 +37,16 @@
     <span class="text">New board</span>
   </div>
   <div class="zoomable" *ngIf="board" #zoomable>
+    <app-cool-loader
+      *ngIf="board && boardsLoaded < board.categoryNames.length"
+    ></app-cool-loader>
     <app-cluster
       *ngFor="let cluster of board.clusters; let i = index"
+      [hidden]="boardsLoaded < board.categoryNames.length"
       [cluster]="cluster"
       [focused]="focusedCluster === i"
       [sortTypeChangedSubject]="sortTypeChangedSubject"
+      (clusterLoadedFirstTime)="boardsLoaded = boardsLoaded + 1"
     ></app-cluster>
   </div>
 </div>

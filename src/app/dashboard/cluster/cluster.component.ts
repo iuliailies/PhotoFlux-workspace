@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -31,6 +33,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   @Input() focused: boolean = false;
   @Input() sortTypeChangedSubject: Subject<PhotoSortType> =
     new Subject<PhotoSortType>();
+  @Output() clusterLoadedFirstTime = new EventEmitter();
   sortType: PhotoSortType = 'created_at';
   photos: Photo[] = [];
   categoryName!: string;
@@ -98,6 +101,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
       .pipe(
         catchError(() => of(false)),
         finalize(() => {
+          this.clusterLoadedFirstTime.emit();
           this.loading = false;
         })
       )

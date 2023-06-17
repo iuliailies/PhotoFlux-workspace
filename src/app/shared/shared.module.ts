@@ -14,6 +14,7 @@ import { ToastComponent } from './components/toast/toast.component';
 import { InfiniteScrollComponent } from './components/infinite-scroll/infinite-scroll.component';
 import { InspectPhotoModalComponent } from './components/inspect-photo-modal/inspect-photo-modal.component';
 import { SelectboxComponent } from './components/selectbox/selectbox.component';
+import { CoolLoaderComponent } from './components/cool-loader/cool-loader.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { SelectboxComponent } from './components/selectbox/selectbox.component';
     InfiniteScrollComponent,
     InspectPhotoModalComponent,
     SelectboxComponent,
+    CoolLoaderComponent,
   ],
   imports: [CommonModule, ModalModule, HttpClientModule, FormsModule],
   exports: [
@@ -35,6 +37,7 @@ import { SelectboxComponent } from './components/selectbox/selectbox.component';
     ToastComponent,
     InfiniteScrollComponent,
     SelectboxComponent,
+    CoolLoaderComponent,
   ],
   providers: [
     ApiInterceptorProvider,

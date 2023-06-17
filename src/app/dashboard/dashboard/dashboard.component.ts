@@ -40,6 +40,7 @@ export class DashboardComponent implements OnInit {
   clusters?: canvaSketcher.Selection;
   sortType: PhotoSortType = 'created_at';
   sortTypeChangedSubject: Subject<PhotoSortType> = new Subject<PhotoSortType>();
+  boardsLoaded = 0;
 
   sortCriteria: { value: string; placeholder: string }[] = [
     { value: 'star', placeholder: 'Most starred' },
@@ -225,5 +226,6 @@ export class DashboardComponent implements OnInit {
 
   sortClusters(): void {
     this.sortTypeChangedSubject.next(this.sortType);
+    this.boardsLoaded = 0;
   }
 }
