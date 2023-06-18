@@ -15,7 +15,14 @@
     <div class="title">
       <div class="label">Choose a file</div>
     </div>
-    <app-file-upload (fileChanged)="file = $event"></app-file-upload>
+    <app-file-upload (fileChanged)="onFileChanged($event)"></app-file-upload>
+    <div class="warning justify-start align-center">
+      <div class="text" *ngIf="showWarning">
+        The image size exceeds our 1080px limit, therefore we will compress it
+        for you. If you wish to have full control over its quality, we suggest
+        compressing it yourself.
+      </div>
+    </div>
   </div>
   <div class="section" [class.disabled]="!file">
     <div class="title align-center">

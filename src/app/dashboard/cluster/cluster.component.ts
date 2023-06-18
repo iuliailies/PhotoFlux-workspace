@@ -17,10 +17,11 @@ import {
 } from 'src/app/shared/components/toast/toast.service';
 import { ModalService } from 'src/app/shared/modal/modal.service';
 import { Cluster, PhotoSortType } from 'src/app/shared/models/board.model';
-import { Photo } from 'src/app/shared/models/photo.model';
+import { Photo, maxCompressedSize } from 'src/app/shared/models/photo.model';
 import { MinioService } from 'src/app/shared/services/minio.service';
 import { PhotoService } from 'src/app/shared/services/photo.service';
 import { StarService } from 'src/app/shared/services/star.service';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @Component({
   selector: 'app-cluster',
@@ -47,7 +48,8 @@ export class ClusterComponent implements OnInit, AfterViewInit {
     private minioService: MinioService,
     private sanitizer: DomSanitizer,
     private toastService: ToastService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private imageCompress: NgxImageCompressService
   ) {}
 
   ngOnInit(): void {
@@ -115,6 +117,19 @@ export class ClusterComponent implements OnInit, AfterViewInit {
             [resp],
             ''
           );
+          this.imageCompress
+            .compressFile(
+              URL.createObjectURL(resp),
+              -1,
+              undefined,
+              50,
+              maxCompressedSize,
+              maxCompressedSize
+            )
+            .then((result) => {
+              this.photos[this.photos.length - length + index].compressedUrl =
+                result;
+            });
           this.photos[this.photos.length - length + index].url =
             this.sanitizeUrl(
               URL.createObjectURL(

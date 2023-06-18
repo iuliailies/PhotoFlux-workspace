@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs';
 import { ComboboxValue } from 'src/app/shared/components/combobox/combobox.component';
+import { getImageDimensions } from 'src/app/shared/helpers/image-dimensions';
 import { ActiveModal } from 'src/app/shared/modal/modal-ref.class';
 import { Category } from 'src/app/shared/models/category.model';
 import { CategoryService } from 'src/app/shared/services/category.service';
@@ -19,6 +20,7 @@ export class PhotoModalComponent implements OnInit {
   categoriesLoading = false;
   categoriesError?: string;
   file?: File;
+  showWarning = false;
 
   constructor(
     public activeModal: ActiveModal,
@@ -28,6 +30,19 @@ export class PhotoModalComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCategories();
+  }
+
+  onFileChanged(event?: File): void {
+    this.file = event;
+    if (!this.file) {
+      this.showWarning = false;
+      return;
+    }
+    // if (this.file.)
+    getImageDimensions(this.file).then((dimensions) => {
+      const { width, height } = dimensions;
+      this.showWarning = width > 1080 || height > 1080;
+    });
   }
 
   getCategories(): void {
@@ -69,7 +84,6 @@ export class PhotoModalComponent implements OnInit {
       )
       .subscribe(
         (resp) => {
-          resp.file = this.file;
           this.activeModal.close(resp);
         },
         (err) => {

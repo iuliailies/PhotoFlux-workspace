@@ -38,7 +38,12 @@ export class PhotoService {
           return this.minio.uploadPhoto(resp.data.meta.href, photo);
         })
       )
-      .pipe(map(() => uploadedPhoto));
+      .pipe(
+        map((resp) => {
+          uploadedPhoto.file = resp;
+          return uploadedPhoto;
+        })
+      );
   }
 
   listMyPhotos(next?: string): Observable<Photos> {

@@ -31,7 +31,7 @@
             (click)="openPhotoModal(photo)"
           >
             <!-- TODO: check why first profile translation is buggy -->
-            <img [src]="photo.url!" class="photo-elem" alt="" />
+            <img [src]="photo.compressedUrl" class="photo-elem" alt="" />
             <div class="stat">
               <img [src]="'./assets/icons/star-empty-white.svg'" alt="" />
               <span class="text">{{ photo.numberStars }}</span>

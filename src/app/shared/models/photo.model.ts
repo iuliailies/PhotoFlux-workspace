@@ -9,6 +9,7 @@ import {
 export class Photo {
   file?: File;
   url?: string;
+  compressedUrl?: string;
   constructor(
     public id: string,
     public attributes: PhotoAttributes,
@@ -16,7 +17,10 @@ export class Photo {
     public starred: boolean,
     public href: string,
     public categories: string[]
-  ) {}
+  ) {
+    // default url, to avoid unpleasing visuals in case the image takes a bit of time to load
+    this.compressedUrl = './assets/wallpapers/light_blue.jpg';
+  }
 
   get link(): string {
     return this.attributes.link;
@@ -42,6 +46,9 @@ export class Photo {
     this.attributes.isUploaded = status;
   }
 }
+
+export const maxCompressedSize = 350;
+export const maxNormalSize = 1080;
 
 export interface Photos {
   data: Photo[];

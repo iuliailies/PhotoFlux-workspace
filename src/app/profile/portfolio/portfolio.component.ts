@@ -8,11 +8,12 @@ import {
   ToastService,
 } from 'src/app/shared/components/toast/toast.service';
 import { ModalService } from 'src/app/shared/modal/modal.service';
-import { Photo } from 'src/app/shared/models/photo.model';
+import { Photo, maxCompressedSize } from 'src/app/shared/models/photo.model';
 import { MinioService } from 'src/app/shared/services/minio.service';
 import { PhotoService } from 'src/app/shared/services/photo.service';
 import { PhotoModalComponent } from '../photo-modal/photo-modal.component';
 import { InspectPhotoModalComponent } from 'src/app/shared/components/inspect-photo-modal/inspect-photo-modal.component';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @UntilDestroy()
 @Component({
@@ -34,7 +35,8 @@ export class PortfolioComponent implements OnInit {
     private photoService: PhotoService,
     private minioService: MinioService,
     private sanitizer: DomSanitizer,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private imageCompress: NgxImageCompressService
   ) {
     this.listPhotos();
   }
@@ -96,6 +98,21 @@ export class PortfolioComponent implements OnInit {
                 this.photos[this.photos.length - length + index].file!
               )
             );
+          this.imageCompress
+            .compressFile(
+              URL.createObjectURL(
+                this.photos[this.photos.length - length + index].file!
+              ),
+              -1,
+              undefined,
+              50,
+              maxCompressedSize,
+              maxCompressedSize
+            )
+            .then((result) => {
+              this.photos[this.photos.length - length + index].compressedUrl =
+                result;
+            });
         });
       });
   }
@@ -106,7 +123,19 @@ export class PortfolioComponent implements OnInit {
     modalRef.result.then(
       (resp: Photo) => {
         resp.url = this.sanitizeUrl(URL.createObjectURL(resp.file!));
-        this.photos.unshift(resp);
+        this.imageCompress
+          .compressFile(
+            URL.createObjectURL(resp.file!),
+            -1,
+            undefined,
+            50,
+            maxCompressedSize,
+            maxCompressedSize
+          )
+          .then((result) => {
+            resp.compressedUrl = result;
+            this.photos.unshift(resp);
+          });
         this.toastService.showToast(TOAST_STATE.success, [
           { toastMessage: `<div>Photo successfully uploaded.</div>` },
         ]);
