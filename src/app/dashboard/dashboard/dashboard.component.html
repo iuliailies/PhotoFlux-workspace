@@ -8,7 +8,10 @@
         >Last update was {{ updatedAtFromNow }}</span
       >
     </div>
-    <div class="subheader justify-start align-center">
+    <div
+      class="subheader justify-start align-center"
+      [class.disabled]="board && boardsLoaded < board.categoryNames.length"
+    >
       <div class="zoom-label">
         <span class="text">{{ zoom }}%</span>
       </div>
@@ -36,10 +39,10 @@
     <img [src]="'./assets/icons/add.svg'" alt="" />
     <span class="text">New board</span>
   </div>
+  <app-cool-loader
+    *ngIf="board && boardsLoaded < board.categoryNames.length"
+  ></app-cool-loader>
   <div class="zoomable" *ngIf="board" #zoomable>
-    <app-cool-loader
-      *ngIf="board && boardsLoaded < board.categoryNames.length"
-    ></app-cool-loader>
     <app-cluster
       *ngFor="let cluster of board.clusters; let i = index"
       [hidden]="boardsLoaded < board.categoryNames.length"
