@@ -9,10 +9,24 @@
         <img [src]="'./assets/icons/back.png'" alt="" />
       </div>
     </div>
-    <span class="name">{{ categoryName || "..." }}</span>
+    <img
+      [src]="'./assets/icons/stars.png'"
+      class="perfect"
+      *ngIf="perfectMatch"
+      alt=""
+    />
+    <span class="name">{{
+      !categoryName ? "..." : perfectMatch ? "Perfect match" : categoryName
+    }}</span>
+    <img
+      [src]="'./assets/icons/stars.png'"
+      class="perfect"
+      *ngIf="perfectMatch"
+      alt=""
+    />
   </div>
   <div class="cluster-body" [class.slimScroll]="focused">
-    <app-infinite-scroll (scrolled)="listPhotos()">
+    <app-infinite-scroll (scrolled)="listPhotos()" [anchorHidden]="!focused">
       <div
         class="gallery"
         [class.hidden-content]="!focused && photos.length > 3"

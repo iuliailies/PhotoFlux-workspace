@@ -106,5 +106,5 @@ export interface PaginationLinks {
 }
 
 export const PAGINATION = {
-  LIMIT: 20,
+  LIMIT: 15,
 };

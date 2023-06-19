@@ -21,7 +21,7 @@ On a high level overview, we are interested in the following user stories:
 - [x] As a logged in user, I want to open a board and see photo clusters, based on the board categories.
 - [x] As a user visualizing a board, I want to be able to interact with the photo clusters by dragging and dropping them.
 - [x] As a user playing with the board layout, I want to easily reset it.
-- [ ] As a user visualizing a board, I want to see a cluster with "Perfect matches" for my selected categories.
+- [x] As a user visualizing a board, I want to see a cluster with "Perfect matches" for my selected categories.
 - [x] As a user visualizing a board, I want to be able to zoom in and see more photos from a specific category.
 - [x] As a user browsing through photos, I want to sort them based on upload time or star count.
 - [x] As a user browsing through photos, I want to visualize a photo.

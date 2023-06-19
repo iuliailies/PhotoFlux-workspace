@@ -15,6 +15,7 @@ import {
 })
 export class InfiniteScrollComponent implements AfterViewInit {
   @Input() options = {};
+  @Input() anchorHidden = false;
   @Output() scrolled = new EventEmitter();
   @ViewChild('anchor') anchor!: ElementRef<HTMLElement>;
 

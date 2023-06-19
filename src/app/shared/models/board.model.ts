@@ -24,12 +24,18 @@ export class Board {
     return this.attributes.name;
   }
 
-  get categoryIds(): string[] {
-    return this.attributes.data.map((elem) => elem.categoryId);
+  get categoryIds(): string[][] {
+    return this.attributes.data.map((elem) => elem.categoryIds);
   }
 
-  get categoryNames(): string[] {
-    return this.attributes.data.map((elem) => elem.categoryName);
+  get categoryNames(): string[][] {
+    return this.attributes.data.map((elem) => elem.categoryNames);
+  }
+
+  get categoryNamesFlattened(): string[] {
+    return this.categoryNames
+      .flatMap((innerArray) => innerArray)
+      .filter((value, index, array) => array.indexOf(value) === index);
   }
 
   get createdAt(): Date {
@@ -64,8 +70,8 @@ export interface BoardAttributes {
 }
 
 export interface Cluster {
-  categoryId: string;
-  categoryName: string;
+  categoryIds: string[];
+  categoryNames: string[];
   position: IPoint;
 }
 

@@ -65,7 +65,7 @@ export class PhotoService {
   }
 
   listPhotos(
-    categoryId: string,
+    categoryIds: string[],
     sortType: string,
     next?: string
   ): Observable<PhotosPerCategory> {
@@ -73,7 +73,7 @@ export class PhotoService {
     if (next === undefined) {
       params = {
         params: new HttpParams()
-          .set('category', categoryId)
+          .set('category', categoryIds.join("."))
           .set('sort', sortType),
       };
     }

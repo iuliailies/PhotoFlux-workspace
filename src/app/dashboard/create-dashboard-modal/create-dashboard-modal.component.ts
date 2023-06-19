@@ -69,10 +69,24 @@ export class CreateDashboardModalComponent implements OnInit {
       return;
     }
     this.clusters = [];
+    if (this.selectedCategories.length > 1) {
+      // create a mixed cluster only if there's more than one category
+      this.clusters.push({
+        categoryIds: this.selectedCategories,
+        categoryNames: this.selectedCategories.map(
+          (id) => this.categories.find((c) => c.id === id)!.name
+        ),
+        position: {
+          x: 0,
+          y: 0,
+        },
+      });
+    }
+
     this.selectedCategories.forEach((category) => {
       this.clusters.push({
-        categoryId: category,
-        categoryName: this.categories.find((c) => c.id === category)!.name,
+        categoryIds: [category],
+        categoryNames: [this.categories.find((c) => c.id === category)!.name],
         position: {
           x: 0,
           y: 0,

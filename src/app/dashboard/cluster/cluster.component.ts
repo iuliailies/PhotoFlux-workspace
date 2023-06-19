@@ -38,6 +38,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   sortType: PhotoSortType = 'created_at';
   photos: Photo[] = [];
   categoryName!: string;
+  perfectMatch = false;
   error = false;
   loading = true;
   next?: string;
@@ -80,10 +81,11 @@ export class ClusterComponent implements OnInit, AfterViewInit {
     }
     this.loading = true;
     this.photoService
-      .listPhotos(this.cluster.categoryId, this.sortType, this.next)
+      .listPhotos(this.cluster.categoryIds, this.sortType, this.next)
       .subscribe(
         (resp) => {
           this.categoryName = resp.categoryName;
+          this.perfectMatch = this.cluster.categoryIds.length > 1;
           this.next = resp.next;
           this.getPhotoFiles(resp.data);
         },
