@@ -9,7 +9,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Subject, catchError, finalize, forkJoin, of } from 'rxjs';
+import { Subject } from 'rxjs';
 import { InspectPhotoModalComponent } from 'src/app/shared/components/inspect-photo-modal/inspect-photo-modal.component';
 import {
   TOAST_STATE,
@@ -32,8 +32,7 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   @ViewChild('clusterElement') clusterElement!: ElementRef;
   @Input() cluster!: Cluster;
   @Input() focused: boolean = false;
-  @Input() sortTypeChangedSubject: Subject<PhotoSortType> =
-    new Subject<PhotoSortType>();
+  @Input() sortTypeChangedSubject: Subject<PhotoSortType> = new Subject<PhotoSortType>();
   @Output() clusterLoadedFirstTime = new EventEmitter();
   sortType: PhotoSortType = 'created_at';
   photos: Photo[] = [];
@@ -42,6 +41,8 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   error = false;
   loading = true;
   next?: string;
+
+  private worker!: Worker;
 
   constructor(
     private photoService: PhotoService,
@@ -54,6 +55,11 @@ export class ClusterComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    if (typeof Worker !== 'undefined') {
+      this.worker = new Worker(new URL('src/app/shared/web-workers/image-worker.worker.ts', import.meta.url));
+      this.worker.onmessage = this.handleWorkerMessages.bind(this);
+    }
+
     this.listPhotos();
     this.sortTypeChangedSubject.subscribe((type) => {
       this.resetValues();
@@ -87,58 +93,67 @@ export class ClusterComponent implements OnInit, AfterViewInit {
           this.categoryName = resp.categoryName;
           this.perfectMatch = this.cluster.categoryIds.length > 1;
           this.next = resp.next;
+
+          this.photos.push(...resp.data);
+
           this.getPhotoFiles(resp.data);
         },
         (err) => {
-          //TODO: error handling
+          this.error = true;
+          this.loading = false;
         }
       );
   }
 
   getPhotoFiles(photos: Photo[]): void {
-    const length = photos.length;
-    // TODO: improve, move minio interaction into the service
-    const request = photos.map((photo) =>
-      this.minioService.getPhoto(photo.href)
-    );
-    forkJoin(request)
-      .pipe(
-        finalize(() => {
-          this.clusterLoadedFirstTime.emit();
-          this.loading = false;
-        })
-      )
-      .subscribe((responses) => {
-        this.photos.push(...photos);
-        (responses as any[]).forEach((resp, index) => {
-          if (resp === false) {
-            return;
-          }
-          this.photos[this.photos.length - length + index].file = new File(
-            [resp],
-            ''
+    const urls = photos.map((photo) => photo.href);
+    if (this.worker) {
+      this.worker.postMessage({ type: 'fetchImages', data: { urls } });
+    } else {
+      this.loading = false;
+    }
+  }
+
+  private async handleWorkerMessages(event: MessageEvent) {
+    const { type, results } = event.data;
+  
+    if (type === 'fetchImages') {
+      const length = results.length;
+      const updatedPhotos = [...this.photos];
+  
+      for (let index = 0; index < length; index++) {
+        const result = results[index];
+        if (result.error) continue;
+  
+        const photoIndex = this.photos.findIndex((p) => p.href === result.url);
+        if (photoIndex === -1) continue;
+  
+        const objectUrl = URL.createObjectURL(result.blob);
+        updatedPhotos[photoIndex].file = new File([result.blob], '');
+        updatedPhotos[photoIndex].url = objectUrl;
+  
+        try {
+          const compressed = await this.imageCompress.compressFile(
+            objectUrl,
+            -1,
+            undefined,
+            50,
+            maxCompressedSize,
+            maxCompressedSize
           );
-          this.imageCompress
-            .compressFile(
-              URL.createObjectURL(resp),
-              -1,
-              undefined,
-              50,
-              maxCompressedSize,
-              maxCompressedSize
-            )
-            .then((result) => {
-              this.photos[this.photos.length - length + index].compressedUrl =
-                result;
-            });
-          this.photos[this.photos.length - length + index].url =
-            this.sanitizeUrl(
-              URL.createObjectURL(
-                this.photos[this.photos.length - length + index].file!
-              )
-            );
-        });
-      });
+  
+          updatedPhotos[photoIndex].compressedUrl = compressed;
+          updatedPhotos[photoIndex].url = this.sanitizeUrl(compressed);
+  
+        } catch (error) {
+          console.error(`Error compressing image: ${error}`);
+        }
+      }
+  
+      this.photos = updatedPhotos;
+      this.loading = false;
+      this.clusterLoadedFirstTime.emit();
+    }
   }
 
   openPhotoModal(photo: Photo): void {
